@@ -1,11 +1,11 @@
-# ABM-of-Influencers-and-advertising
+# Agent Based Model: Influncer-Follower Dynamics for Advertising Campaign
 
 
 ## Run Locally
 **1. Clone the repo**
 ```
-$ git https://github.com/ronak66/Influencer-Follower-Dynamics-for-Advertising-Strategies.git
-$ cd Influencer-Follower-Dynamics-for-Advertising-Strategies
+$ git https://github.com/ronak66/ABM-Influencer-Follower-Advertising-Framework.git 
+$ cd ABM-Influencer-Follower-Advertising-Framework 
 ```
 **2. Install and Create a Virtual Environment (If already installed, skip 1st command)**    
 ```

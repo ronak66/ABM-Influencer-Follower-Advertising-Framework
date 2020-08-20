@@ -5,7 +5,7 @@ class InfluencerAgent(Agent):
 
     def __init__(self, unique_id, model):
         super().__init__(unique_id, model)
-
+        self.hired = False
         self.out_degree = 0
         self.decision = False
         self.interest = uniformRandomGenerator(0, 1)

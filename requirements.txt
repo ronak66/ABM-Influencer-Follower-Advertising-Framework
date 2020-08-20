@@ -1,2 +1,4 @@
+numpy==1.18.3
+networkx==2.4
 mesa==0.8.7
 numba==0.51.0
