@@ -25,17 +25,9 @@ class InfluencerAdvertisingModel(Model):
         self.running = True
 
         self.generate_agents()
+        self.assign_outdegree()
         self.setup_grid()
         self.initialize_campaign_marketers(node_ids)
-
-    def initialize_campaign_marketers(self,node_ids):
-        '''
-        All the node ids who start the campaign propagation
-        '''
-        for node_id in node_ids:
-            self.id_agent_mp[node_id].hired = True
-            self.bfs_queue.put(node_id)
-        # print("="*80,self.bfs_queue.get())
 
     def generate_agents(self):
         '''
@@ -45,6 +37,13 @@ class InfluencerAdvertisingModel(Model):
         for node_id in self.graph.nodes():
             agent = InfluencerAgent(node_id,self)
             self.id_agent_mp[node_id] = agent
+
+    def assign_outdegree(self):
+        for node_id, agent in self.id_agent_mp.items():
+            if(node_id in self.graph.graph.keys()):
+                agent.set_outDegree(len(self.graph.graph[node_id]))
+            else:
+                agent.set_outDegree(0)
 
     def setup_grid(self):
         '''
@@ -57,6 +56,14 @@ class InfluencerAdvertisingModel(Model):
                     return
                 self.grid.place_agent(self.id_agent_mp[node_id], (col, row))
                 node_id+=1
+
+    def initialize_campaign_marketers(self,node_ids):
+        '''
+        All the node ids who start the campaign propagation
+        '''
+        for node_id in node_ids:
+            self.id_agent_mp[node_id].hired = True
+            self.bfs_queue.put(node_id)
 
     def propagate_from_node(self,node_id):
         '''
@@ -74,12 +81,10 @@ class InfluencerAdvertisingModel(Model):
 
                 if(ngb_agent.decision == False and ngb_agent.hired == False):
                     decision = ngb_agent.make_decision(weight)
-                    # print(decision)
-                    if(decision == True):
-                        self.bfs_queue.put(ngb_id)
-                        self.update_ngb_nodes_interest(node_id)
+                    self.bfs_queue.put(ngb_id)
+                    self.update_ngb_nodes_interest(node_id, decision)
 
-    def update_ngb_nodes_interest(self,node_id):
+    def update_ngb_nodes_interest(self,node_id, decision):
         '''
         Given the node (who acknowledge the campaign), update interest of it's neighbours
         '''
@@ -91,10 +96,9 @@ class InfluencerAdvertisingModel(Model):
                 ngb_agent = self.id_agent_mp[ngb_id]
 
                 if(ngb_agent.decision == False):
-                    ngb_agent.update_interest(weight)
+                    ngb_agent.update_interest(weight, decision)
 
     def step(self):
-        # print(1)
         n = self.bfs_queue.qsize()
         for _ in range(n):
             node_id = self.bfs_queue.get()
