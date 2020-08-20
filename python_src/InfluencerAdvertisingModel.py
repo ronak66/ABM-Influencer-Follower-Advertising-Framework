@@ -45,17 +45,22 @@ class InfluencerAdvertisingModel(Model):
             else:
                 agent.set_outDegree(0)
 
-    def setup_grid(self):
+    def setup_grid(self,random_position=1):
         '''
         Places agents on the grid
         '''
-        node_id = 0
-        for row in range(self.grid.width):
-            for col in range(self.grid.height):
-                if(node_id == self.num_agents):
-                    return
-                self.grid.place_agent(self.id_agent_mp[node_id], (col, row))
-                node_id+=1
+        if(random_position==1):
+            for node_id in self.graph.nodes():
+                x, y = random.choice(list(self.grid.empties))
+                self.grid.place_agent(self.id_agent_mp[node_id], (x, y))
+        else:
+            node_id = 0
+            for row in range(self.grid.width):
+                for col in range(self.grid.height):
+                    if(node_id == self.num_agents):
+                        return
+                    self.grid.place_agent(self.id_agent_mp[node_id], (col, row))
+                    node_id+=1
 
     def initialize_campaign_marketers(self,node_ids):
         '''

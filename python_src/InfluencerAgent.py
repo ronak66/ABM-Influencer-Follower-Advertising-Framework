@@ -1,5 +1,5 @@
 from mesa import Agent
-from randomGenerator import uniformRandomGenerator
+from RandomGenerator import RandomGenerator
 
 class InfluencerAgent(Agent):
 
@@ -8,7 +8,7 @@ class InfluencerAgent(Agent):
         self.hired = False
         self.out_degree = 0
         self.decision = False
-        self.interest = uniformRandomGenerator(0, 1)
+        self.interest = RandomGenerator(0, 1)
 
     def get_outDegree(self):
         return self.out_degree
@@ -36,5 +36,5 @@ class InfluencerAgent(Agent):
             self.interest = self.interest - (self.interest*influence)**100000
 
     def decision_function(self, influence):
-        decision = uniformRandomGenerator(0, 1) < self.interest*influence
+        decision = RandomGenerator(0, 1) < self.interest*influence
         return decision

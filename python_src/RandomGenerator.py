@@ -1,4 +1,4 @@
 from numpy import random
 
-def uniformRandomGenerator(x, y):
+def RandomGenerator(x, y):
     return random.uniform(x, y)

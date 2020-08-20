@@ -23,7 +23,7 @@ def agent_portrayal(agent):
 if __name__ == '__main__':
     width = height = 50
     number_of_nodes = width*height
-    graph = Graph(number_of_nodes,50)
+    graph = Graph(n = number_of_nodes, k = 50)
     grid = CanvasGrid(agent_portrayal, width, height, 500, 500)
     server = ModularServer(InfluencerAdvertisingModel,
                     [grid],
