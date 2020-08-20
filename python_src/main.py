@@ -18,17 +18,6 @@ def agent_portrayal(agent):
         if(agent.decision == True):
             portrayal["Color"] = "green"
             portrayal["r"] = 0.2
-    # if agent.wealth > 0:
-    #     if(agent.start == 1):
-    #         portrayal["Color"] = "blue"
-    #         portrayal["Layer"] = 0
-    #     else:
-    #         portrayal["Color"] = "red"
-    #         portrayal["Layer"] = 0
-    # else:
-    #     portrayal["Color"] = "green"
-    #     portrayal["Layer"] = 1
-    #     portrayal["r"] = 0.2
     return portrayal
 
 if __name__ == '__main__':
@@ -36,10 +25,9 @@ if __name__ == '__main__':
     number_of_nodes = width*height
     graph = Graph(number_of_nodes,100)
     grid = CanvasGrid(agent_portrayal, width, height, 500, 500)
-    # grid = NetworkModule(agent_portrayal)
     server = ModularServer(InfluencerAdvertisingModel,
                     [grid],
                     "Influencer Advertising Model",
-                    {"width":width, "height":height, "Graph": graph, "node_ids": [1,2,3]})
+                    {"width":width, "height":height, "Graph": graph, "node_ids": [1]})
     server.port = 8521 # The default
     server.launch()
