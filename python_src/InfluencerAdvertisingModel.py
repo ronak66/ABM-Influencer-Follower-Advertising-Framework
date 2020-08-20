@@ -3,13 +3,9 @@ from queue import Queue
 
 from mesa import Model
 from mesa.space import MultiGrid
-from mesa.time import RandomActivation
 from mesa.datacollection import DataCollector
-from mesa.visualization.modules import CanvasGrid
-from mesa.visualization.ModularVisualization import ModularServer
 
 from InfluencerAgent import InfluencerAgent
-
 class InfluencerAdvertisingModel(Model):
 
     def __init__(self, width, height, Graph, node_ids):
@@ -24,10 +20,29 @@ class InfluencerAdvertisingModel(Model):
         self.bfs_queue = Queue()
         self.running = True
 
+        self.setup_datacollector()
         self.generate_agents()
         self.assign_outdegree()
         self.setup_grid()
         self.initialize_campaign_marketers(node_ids)
+
+    def number_bought(self,model):
+        count=0
+        for _, agent in model.id_agent_mp.items():
+            if(agent.decision == True): count+=1
+        return count
+
+    def no_bought_every_timestep(self,model):
+        return model.bfs_queue.qsize()
+
+    def setup_datacollector(self):
+        self.datacollector = DataCollector(
+            model_reporters={
+                "No bought at every timestep": self.no_bought_every_timestep,
+                "No who bought": self.number_bought
+            }
+            # agent_reporters={"Wealth": "wealth"}
+        )
 
     def generate_agents(self):
         '''
@@ -67,6 +82,7 @@ class InfluencerAdvertisingModel(Model):
         All the node ids who start the campaign propagation
         '''
         for node_id in node_ids:
+            print("="*80,self.id_agent_mp[node_id].get_outDegree(),sep='\n')
             self.id_agent_mp[node_id].hired = True
             self.bfs_queue.put(node_id)
 
@@ -86,8 +102,9 @@ class InfluencerAdvertisingModel(Model):
 
                 if(ngb_agent.decision == False and ngb_agent.hired == False):
                     decision = ngb_agent.make_decision(weight)
-                    self.bfs_queue.put(ngb_id)
                     self.update_ngb_nodes_interest(node_id, decision)
+                    if(decision == True):
+                        self.bfs_queue.put(ngb_id)
 
     def update_ngb_nodes_interest(self,node_id, decision):
         '''
@@ -105,6 +122,7 @@ class InfluencerAdvertisingModel(Model):
 
     def step(self):
         n = self.bfs_queue.qsize()
+        self.datacollector.collect(self)
         for _ in range(n):
             node_id = self.bfs_queue.get()
             self.propagate_from_node(node_id)

@@ -3,6 +3,7 @@ from InfluencerAgent import InfluencerAgent
 from InfluencerAdvertisingModel import InfluencerAdvertisingModel
 
 from mesa.visualization.modules import CanvasGrid
+from mesa.visualization.modules import ChartModule
 from mesa.visualization.ModularVisualization import ModularServer
 
 def agent_portrayal(agent):
@@ -23,11 +24,23 @@ def agent_portrayal(agent):
 if __name__ == '__main__':
     width = height = 50
     number_of_nodes = width*height
-    graph = Graph(n = number_of_nodes, k = 50)
+    graph = Graph(n = number_of_nodes, k = 250)
     grid = CanvasGrid(agent_portrayal, width, height, 500, 500)
-    server = ModularServer(InfluencerAdvertisingModel,
-                    [grid],
-                    "Influencer Advertising Model",
-                    {"width":width, "height":height, "Graph": graph, "node_ids": [1000]})
+    chart1 = ChartModule(
+        [{"Label": "No who bought",
+        "Color": "Black"}],
+        data_collector_name='datacollector'
+    )
+    chart2 = ChartModule(
+        [{"Label": "No bought at every timestep",
+        "Color": "Black"}],
+        data_collector_name='datacollector'
+    )
+    server = ModularServer(
+        InfluencerAdvertisingModel,
+        [grid,chart1,chart2],
+        "Influencer Advertising Model",
+        {"width":width, "height":height, "Graph": graph, "node_ids": [2000]}
+    )
     server.port = 8521 # The default
     server.launch()
