@@ -22,11 +22,19 @@ class InfluencerAgent(Agent):
     def get_decision(self):
         return self.decision
 
-    def update_interest(self, influence):
-        print(self.interest)
-        self.interest = self.interest + ((self.interest*influence)**100000)*0
+    def update_interest(self, influence, decision):
+        self.interest_update_function(influence, decision)
 
     def make_decision(self, influence):
-        self.decision = uniformRandomGenerator(0, 1) < self.interest*influence
-        return self.decision 
+        self.decision = self.decision_function(influence)
+        return self.decision
 
+    def interest_update_function(self, influence, decision):
+        if decision:
+            self.interest = self.interest + (self.interest*influence)**100000
+        else:
+            self.interest = self.interest - (self.interest*influence)**100000
+
+    def decision_function(self, influence):
+        decision = uniformRandomGenerator(0, 1) < self.interest*influence
+        return decision
