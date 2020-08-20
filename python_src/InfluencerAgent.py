@@ -23,7 +23,10 @@ class InfluencerAgent(Agent):
         return self.decision
 
     def update_interest(self, influence):
-        self.interest = self.interest + (self.interest*influence)**2
+        print(self.interest)
+        self.interest = self.interest + (self.interest*influence)**100
 
     def make_decision(self, influence):
-        return uniformRandomGenerator(0, 1) < self.interest*influence
+        self.decision = uniformRandomGenerator(0, 1) < self.interest*influence
+        return self.decision 
+
