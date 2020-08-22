@@ -8,14 +8,13 @@ from mesa.datacollection import DataCollector
 from InfluencerAgent import InfluencerAgent
 class InfluencerAdvertisingModel(Model):
 
-    def __init__(self, width, height, Graph, node_ids):
+    def __init__(self, width, height, Graph, node_ids, grid=1):
         '''
         Graph = {
             <node id> : [ <Edge Object> ]
         }
         '''
-        self.num_agents = len((Graph.nodes()))
-        self.grid = MultiGrid(width, height, True)
+        self.num_agents = len((Graph.get_nodes()))
         self.graph = Graph
         self.bfs_queue = Queue()
         self.running = True
@@ -23,7 +22,11 @@ class InfluencerAdvertisingModel(Model):
         self.setup_datacollector()
         self.generate_agents()
         self.assign_outdegree()
-        self.setup_grid()
+
+        if(grid==1): 
+            self.grid = MultiGrid(width, height, True)
+            self.setup_grid()
+
         self.initialize_campaign_marketers(node_ids)
 
     def number_bought(self,model):
@@ -49,7 +52,7 @@ class InfluencerAdvertisingModel(Model):
         Creates mapping with keys as the node id, and value as agent class
         '''
         self.id_agent_mp = {}
-        for node_id in self.graph.nodes():
+        for node_id in self.graph.get_nodes():
             agent = InfluencerAgent(node_id,self)
             self.id_agent_mp[node_id] = agent
 
@@ -65,7 +68,7 @@ class InfluencerAdvertisingModel(Model):
         Places agents on the grid
         '''
         if(random_position==1):
-            for node_id in self.graph.nodes():
+            for node_id in self.graph.get_nodes():
                 x, y = random.choice(list(self.grid.empties))
                 self.grid.place_agent(self.id_agent_mp[node_id], (x, y))
         else:
@@ -126,3 +129,5 @@ class InfluencerAdvertisingModel(Model):
         for _ in range(n):
             node_id = self.bfs_queue.get()
             self.propagate_from_node(node_id)
+        # node_id = self.bfs_queue.get()
+        # self.propagate_from_node(node_id)

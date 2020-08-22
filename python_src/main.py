@@ -21,11 +21,8 @@ def agent_portrayal(agent):
             portrayal["r"] = 0.2
     return portrayal
 
-if __name__ == '__main__':
-    width = height = 50
-    number_of_nodes = width*height
-    graph = Graph(n = number_of_nodes, k = 250)
-    grid = CanvasGrid(agent_portrayal, width, height, 500, 500)
+
+def display(graph_type):
     chart1 = ChartModule(
         [{"Label": "No who bought",
         "Color": "Black"}],
@@ -36,11 +33,33 @@ if __name__ == '__main__':
         "Color": "Black"}],
         data_collector_name='datacollector'
     )
+    if(graph_type=='networkx'):
+        grid = CanvasGrid(agent_portrayal, width, height, 500, 500)
+        return [grid,chart1,chart2]
+    return [chart1,chart2]
+
+
+if __name__ == '__main__':
+
+    width = height = 50
+    number_of_nodes = width*height
+    graph_type='twitter'
+    # graph_type='networkx'
+
+    if(graph_type=='networkx'):
+        node_ids = [1]
+        grid=1
+        graph = Graph(graph_type='networkx', n=number_of_nodes, k=20)
+    if(graph_type=='twitter'):
+        node_ids = [53870594]
+        grid=0
+        graph = Graph(graph_type=graph_type, filepath='../data/twitter_combined.txt')
+
     server = ModularServer(
         InfluencerAdvertisingModel,
-        [grid,chart1,chart2],
+        display(graph_type),
         "Influencer Advertising Model",
-        {"width":width, "height":height, "Graph": graph, "node_ids": [2000]}
+        {"width":width, "height":height, "Graph": graph, "node_ids": node_ids, 'grid': grid}
     )
-    server.port = 8521 # The default
+    server.port = 8521
     server.launch()
