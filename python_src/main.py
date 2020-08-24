@@ -6,6 +6,8 @@ from mesa.visualization.modules import CanvasGrid
 from mesa.visualization.modules import ChartModule
 from mesa.visualization.ModularVisualization import ModularServer
 
+
+
 def agent_portrayal(agent):
     portrayal = {"Shape": "circle",
                  "Color": "red",

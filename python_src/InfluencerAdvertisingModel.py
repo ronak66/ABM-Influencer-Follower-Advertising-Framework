@@ -23,7 +23,7 @@ class InfluencerAdvertisingModel(Model):
         self.generate_agents()
         self.assign_outdegree()
 
-        if(grid==1): 
+        if(grid==1):
             self.grid = MultiGrid(width, height, True)
             self.setup_grid()
 
@@ -94,17 +94,17 @@ class InfluencerAdvertisingModel(Model):
         Given a node, propagates the campaign
         Makes the decision for all the neighours of the given node
         '''
-        
+
         if(node_id in self.graph.graph.keys()):
             for _, ngb_edge in enumerate(self.graph.graph[node_id]):
 
                 ngb_id = ngb_edge.node_id
                 weight = ngb_edge.weight
                 ngb_agent = self.id_agent_mp[ngb_id]
-                
+
 
                 if(ngb_agent.decision == False and ngb_agent.hired == False):
-                    decision = ngb_agent.make_decision(weight)
+                    decision = ngb_agent.make_decision(weight, 50)
                     self.update_ngb_nodes_interest(node_id, decision)
                     if(decision == True):
                         self.bfs_queue.put(ngb_id)

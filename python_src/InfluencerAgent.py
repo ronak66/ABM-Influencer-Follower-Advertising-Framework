@@ -9,6 +9,7 @@ class InfluencerAgent(Agent):
         self.out_degree = 0
         self.decision = False
         self.interest = RandomGenerator(0, 1)
+        self.resources = RandomGenerator(0, 100)
 
     def get_outDegree(self):
         return self.out_degree
@@ -25,8 +26,8 @@ class InfluencerAgent(Agent):
     def update_interest(self, influence, decision):
         self.interest_update_function(influence, decision)
 
-    def make_decision(self, influence):
-        self.decision = self.decision_function(influence)
+    def make_decision(self, influence, product_cost):
+        self.decision = self.decision_function(influence, product_cost)
         return self.decision
 
     def interest_update_function(self, influence, decision):
@@ -35,6 +36,9 @@ class InfluencerAgent(Agent):
         else:
             self.interest = self.interest - (self.interest*influence)**100000
 
-    def decision_function(self, influence):
-        decision = RandomGenerator(0, 1) < self.interest*influence
+    def decision_function(self, influence, product_cost):
+        if self.resources >= product_cost:
+            decision = RandomGenerator(0, 1) < self.interest*influence
+        else:
+            decision = False
         return decision
