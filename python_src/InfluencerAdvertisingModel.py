@@ -8,7 +8,7 @@ from mesa.datacollection import DataCollector
 from InfluencerAgent import InfluencerAgent
 class InfluencerAdvertisingModel(Model):
 
-    def __init__(self, width, height, Graph, node_ids, grid=1):
+    def __init__(self, width, height, Graph, node_ids, product_cost, grid=1):
         '''
         Graph = {
             <node id> : [ <Edge Object> ]
@@ -18,6 +18,7 @@ class InfluencerAdvertisingModel(Model):
         self.graph = Graph
         self.bfs_queue = Queue()
         self.running = True
+        self.product_cost = product_cost
 
         self.setup_datacollector()
         self.generate_agents()
@@ -104,7 +105,7 @@ class InfluencerAdvertisingModel(Model):
 
 
                 if(ngb_agent.decision == False and ngb_agent.hired == False):
-                    decision = ngb_agent.make_decision(weight, 50)
+                    decision = ngb_agent.make_decision(weight, self.product_cost)
                     self.update_ngb_nodes_interest(node_id, decision)
                     if(decision == True):
                         self.bfs_queue.put(ngb_id)

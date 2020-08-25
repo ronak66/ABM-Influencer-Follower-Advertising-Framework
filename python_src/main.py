@@ -51,17 +51,29 @@ if __name__ == '__main__':
     if(graph_type=='networkx'):
         node_ids = [1]
         grid=1
-        graph = Graph(graph_type='networkx', n=number_of_nodes, k=20)
+        graph = Graph()
+        graph.create_networkx_graph(n=number_of_nodes, k=250)
+
     if(graph_type=='twitter'):
-        node_ids = [53870594]
+        node_ids = [40981798]
         grid=0
-        graph = Graph(graph_type=graph_type, filepath='../data/twitter_combined.txt')
+        graph = Graph()
+        graph.create_twitter_graph(filepath='../data/twitter_combined.txt')
+
+    params = {
+        "width":width, 
+        "height":height, 
+        "Graph": graph, 
+        "node_ids": node_ids, 
+        "grid": grid, 
+        "product_cost": 50
+    }
 
     server = ModularServer(
         InfluencerAdvertisingModel,
         display(graph_type),
         "Influencer Advertising Model",
-        {"width":width, "height":height, "Graph": graph, "node_ids": node_ids, 'grid': grid}
+        params
     )
     server.port = 8521
     server.launch()

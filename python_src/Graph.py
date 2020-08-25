@@ -4,14 +4,12 @@ import networkx as nx
 
 class Graph():
 
-    def __init__(self,graph_type,filepath='',n=100,k=10,p=0.5):        
+    def __init__(self):        
         self.graph = {}
-        if(graph_type=='networkx'):
-            self.create_networkx_graph(n,k,p)
-        if(graph_type=='twitter'):
-            self.create_twitter_graph(filepath)
-
-        self.assign_edge_weights()
+        # if(graph_type=='networkx'):
+        #     self.create_networkx_graph(n,k,p)
+        # if(graph_type=='twitter'):
+        #     self.create_twitter_graph(filepath)
         
     def assign_edge_weights(self):
         for from_node,to_node in self.edges:
@@ -21,10 +19,12 @@ class Graph():
             else:
                 self.graph[from_node] = [edge]
 
-    def create_networkx_graph(self,n,k,p):
+    def create_networkx_graph(self,n,k,p=0.5):
         G = nx.watts_strogatz_graph(n=n, k=k, p=p)
         self.edges = list(G.edges())
         self.nodes = list(G.nodes())
+
+        self.assign_edge_weights()
     
     def create_twitter_graph(self,filepath):
         self.edges = []
@@ -37,8 +37,11 @@ class Graph():
                 self.nodes.add(y)
         self.nodes = list(self.nodes)
 
+        self.assign_edge_weights()
+
     def get_nodes(self):
         return self.nodes
+        
 class Edge():
 
     def __init__(self,node_id,weight):
