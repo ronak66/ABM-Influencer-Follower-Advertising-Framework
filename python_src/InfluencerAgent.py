@@ -1,5 +1,5 @@
 from mesa import Agent
-from RandomGenerator import RandomGenerator
+from RandomGenerator import *
 
 class InfluencerAgent(Agent):
 
