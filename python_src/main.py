@@ -55,10 +55,10 @@ if __name__ == '__main__':
         graph.create_networkx_graph(n=number_of_nodes, k=250)
 
     if(graph_type=='twitter'):
-        node_ids = [40981798]
+        node_ids = [89634510]
         grid=0
         graph = Graph()
-        graph.create_twitter_graph(filepath='../data/twitter_combined.txt')
+        graph.create_twitter_graph(filepath='../data/cleaned_twitter_combined.txt')
 
     params = {
         "width":width, 
