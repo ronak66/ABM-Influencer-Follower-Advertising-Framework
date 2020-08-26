@@ -103,9 +103,9 @@ class InfluencerAdvertisingModel(Model):
                 weight = ngb_edge.weight
                 ngb_agent = self.id_agent_mp[ngb_id]
 
-
                 if(ngb_agent.decision == False and ngb_agent.hired == False):
                     decision = ngb_agent.make_decision(weight, self.product_cost)
+                    ngb_agent.count += 1
                     self.update_ngb_nodes_interest(node_id, decision)
                     if(decision == True):
                         self.bfs_queue.put(ngb_id)
@@ -124,11 +124,19 @@ class InfluencerAdvertisingModel(Model):
                 if(ngb_agent.decision == False):
                     ngb_agent.update_interest(weight, decision)
 
+    def count(self):
+        count=0
+        for _, agent in self.id_agent_mp.items():
+            count += agent.count
+        return count
+
     def step(self):
         n = self.bfs_queue.qsize()
         self.datacollector.collect(self)
         for _ in range(n):
             node_id = self.bfs_queue.get()
             self.propagate_from_node(node_id)
+        print("-"*80)
+        print(self.count())
         # node_id = self.bfs_queue.get()
         # self.propagate_from_node(node_id)
