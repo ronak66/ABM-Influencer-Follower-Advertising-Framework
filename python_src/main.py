@@ -55,7 +55,12 @@ if __name__ == '__main__':
         graph.create_networkx_graph(n=number_of_nodes, k=250)
 
     if(graph_type=='twitter'):
-        node_ids = [89634510]
+        # node_ids = [89634510] # outdergree 20
+        # node_ids = [115485051] # outdergree 3383
+        # node_ids = [16157855] # outdergree 157
+        # node_ids = [14155052] # outdergree 342
+        node_ids = [144040563] # outdergree 628
+
         grid=0
         graph = Graph()
         graph.create_twitter_graph(filepath='../data/cleaned_twitter_combined.txt')

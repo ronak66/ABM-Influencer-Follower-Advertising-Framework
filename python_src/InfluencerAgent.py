@@ -10,7 +10,6 @@ class InfluencerAgent(Agent):
         self.decision = False
         self.interest = RandomGenerator(0, 1)
         self.resources = RandomGenerator(0, 100)
-        self.count = 0
         self.active = True
         self.sig_strength = 0
 
@@ -45,7 +44,7 @@ class InfluencerAgent(Agent):
     def decision_function(self, influence, signal_strength, product_cost):
         self.active = randomTrueFalse(0.9)
         if self.resources >= product_cost and self.active:
-            decision = RandomGenerator(0, 1) < self.interest*influence * signal_strength
+            decision = RandomGenerator(0, 1) < (self.interest * influence * signal_strength)
         else:
             decision = False
         return decision

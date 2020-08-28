@@ -108,8 +108,8 @@ class InfluencerAdvertisingModel(Model):
                 ngb_agent = self.id_agent_mp[ngb_id]
 
                 if(ngb_agent.decision == False and ngb_agent.hired == False):
-                    decision = ngb_agent.make_decision(weight, self.sig_decay(self.signal_strength, self.current_step), self.product_cost)
-                    ngb_agent.count += 1
+                    decay_factor = self.sig_decay(self.signal_strength, self.current_step)
+                    decision = ngb_agent.make_decision(weight, decay_factor, self.product_cost)
                     self.update_ngb_nodes_interest(node_id, decision)
                     if(decision == True):
                         self.bfs_queue.put(ngb_id)
@@ -128,17 +128,8 @@ class InfluencerAdvertisingModel(Model):
                 if(ngb_agent.decision == False):
                     ngb_agent.update_interest(weight, decision)
 
-    def count(self):
-        count=0
-        for _, agent in self.id_agent_mp.items():
-            count += agent.count
-        return count
-
-    def sig_decay_function(self, sig_strength, bfs_level):
-        return sig_strength * (bfs_level**-1)
-
     def sig_decay(self, sig_strength, bfs_level):
-        return self.sig_decay_function(sig_strength, bfs_level)
+        return sig_strength * (bfs_level**-(1))
 
     def step(self):
         n = self.bfs_queue.qsize()
@@ -146,8 +137,4 @@ class InfluencerAdvertisingModel(Model):
         for _ in range(n):
             node_id = self.bfs_queue.get()
             self.propagate_from_node(node_id)
-        print("-"*80)
-        print(self.count())
-        self.current_step += 1
-        # node_id = self.bfs_queue.get()
-        # self.propagate_from_node(node_id)
+        self.current_step += 1        
