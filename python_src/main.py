@@ -14,7 +14,7 @@ def agent_portrayal(agent):
                  "Filled": "true",
                  "Layer": 0,
                  "r": 0.5}
-
+                 
     if(agent.hired == True):
         portrayal["Color"] = "blue"
     else:
@@ -55,17 +55,17 @@ if __name__ == '__main__':
         graph.create_networkx_graph(n=number_of_nodes, k=250)
 
     if(graph_type=='twitter'):
-        node_ids = [89634510]
+        node_ids = [115485051]
         grid=0
         graph = Graph()
         graph.create_twitter_graph(filepath='../data/cleaned_twitter_combined.txt')
 
     params = {
-        "width":width, 
-        "height":height, 
-        "Graph": graph, 
-        "node_ids": node_ids, 
-        "grid": grid, 
+        "width":width,
+        "height":height,
+        "Graph": graph,
+        "node_ids": node_ids,
+        "grid": grid,
         "product_cost": 50
     }
 
