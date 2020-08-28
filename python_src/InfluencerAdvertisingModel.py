@@ -22,7 +22,7 @@ class InfluencerAdvertisingModel(Model):
 
         self.setup_datacollector()
         self.generate_agents()
-        self.assign_outdegree()
+        self.assign_outdegree_and_sigstrength()
 
         if(grid==1):
             self.grid = MultiGrid(width, height, True)
@@ -57,10 +57,11 @@ class InfluencerAdvertisingModel(Model):
             agent = InfluencerAgent(node_id,self)
             self.id_agent_mp[node_id] = agent
 
-    def assign_outdegree(self):
+    def assign_outdegree_and_sigstrength(self):
         for node_id, agent in self.id_agent_mp.items():
             if(node_id in self.graph.graph.keys()):
                 agent.set_outDegree(len(self.graph.graph[node_id]))
+                agent.set_sigStrength(agent.out_degree * self.num_agents)
             else:
                 agent.set_outDegree(0)
 
@@ -129,6 +130,12 @@ class InfluencerAdvertisingModel(Model):
         for _, agent in self.id_agent_mp.items():
             count += agent.count
         return count
+
+    def sig_decay_function(self, sig_strength, bfs_level):
+        return sig_strength * (bfs_level**-2)
+
+    def sig_decay(self, sig_strength, bfs_level):
+        return sig_decay_function(sig_strength, bfs_level)
 
     def step(self):
         n = self.bfs_queue.qsize()
