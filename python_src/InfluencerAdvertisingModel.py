@@ -19,10 +19,12 @@ class InfluencerAdvertisingModel(Model):
         self.bfs_queue = Queue()
         self.running = True
         self.product_cost = product_cost
+        self.current_step = 1
+        self.signal_strength = 0
 
         self.setup_datacollector()
         self.generate_agents()
-        self.assign_outdegree_and_sigstrength()
+        self.assign_attributes()
 
         if(grid==1):
             self.grid = MultiGrid(width, height, True)
@@ -57,11 +59,11 @@ class InfluencerAdvertisingModel(Model):
             agent = InfluencerAgent(node_id,self)
             self.id_agent_mp[node_id] = agent
 
-    def assign_outdegree_and_sigstrength(self):
+    def assign_attributes(self):
         for node_id, agent in self.id_agent_mp.items():
             if(node_id in self.graph.graph.keys()):
                 agent.set_outDegree(len(self.graph.graph[node_id]))
-                agent.set_sigStrength(agent.out_degree * self.num_agents)
+                agent.set_sigStrength(agent.out_degree / 3383)
             else:
                 agent.set_outDegree(0)
 
@@ -90,6 +92,7 @@ class InfluencerAdvertisingModel(Model):
             print("="*80,self.id_agent_mp[node_id].get_outDegree(),sep='\n')
             self.id_agent_mp[node_id].hired = True
             self.bfs_queue.put(node_id)
+            self.signal_strength = self.id_agent_mp[node_id].sig_strength
 
     def propagate_from_node(self,node_id):
         '''
@@ -105,7 +108,7 @@ class InfluencerAdvertisingModel(Model):
                 ngb_agent = self.id_agent_mp[ngb_id]
 
                 if(ngb_agent.decision == False and ngb_agent.hired == False):
-                    decision = ngb_agent.make_decision(weight, self.product_cost)
+                    decision = ngb_agent.make_decision(weight, self.sig_decay(self.signal_strength, self.current_step), self.product_cost)
                     ngb_agent.count += 1
                     self.update_ngb_nodes_interest(node_id, decision)
                     if(decision == True):
@@ -132,10 +135,10 @@ class InfluencerAdvertisingModel(Model):
         return count
 
     def sig_decay_function(self, sig_strength, bfs_level):
-        return sig_strength * (bfs_level**-2)
+        return sig_strength * (bfs_level**-1)
 
     def sig_decay(self, sig_strength, bfs_level):
-        return sig_decay_function(sig_strength, bfs_level)
+        return self.sig_decay_function(sig_strength, bfs_level)
 
     def step(self):
         n = self.bfs_queue.qsize()
@@ -145,5 +148,6 @@ class InfluencerAdvertisingModel(Model):
             self.propagate_from_node(node_id)
         print("-"*80)
         print(self.count())
+        self.current_step += 1
         # node_id = self.bfs_queue.get()
         # self.propagate_from_node(node_id)
