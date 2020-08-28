@@ -11,6 +11,7 @@ class InfluencerAgent(Agent):
         self.interest = RandomGenerator(0, 1)
         self.resources = RandomGenerator(0, 100)
         self.count = 0
+        self.active = randomTrueFalse(0.9)
 
     def get_outDegree(self):
         return self.out_degree
