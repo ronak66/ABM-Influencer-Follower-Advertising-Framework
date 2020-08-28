@@ -12,3 +12,8 @@ def gaussianRandomgenerator(x, y, mu, sigma):
     else:
         pass
     return sample
+
+
+def randomTrueFalse(p):
+    '''return true with given probability p'''
+    return random.uniform(0, 1) <= p    

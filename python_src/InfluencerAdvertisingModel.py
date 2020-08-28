@@ -103,7 +103,7 @@ class InfluencerAdvertisingModel(Model):
                 weight = ngb_edge.weight
                 ngb_agent = self.id_agent_mp[ngb_id]
 
-                if(ngb_agent.decision == False and ngb_agent.hired == False):
+                if(ngb_agent.decision == False and ngb_agent.hired == False and ngb_agent.active == True):
                     decision = ngb_agent.make_decision(weight, self.product_cost)
                     ngb_agent.count += 1
                     self.update_ngb_nodes_interest(node_id, decision)
