@@ -1,6 +1,8 @@
 import random
 import networkx as nx
 
+from RandomGenerator import gaussianRandomgenerator
+
 
 class Graph():
 
@@ -9,12 +11,19 @@ class Graph():
         
     def assign_edge_weights(self):
         for from_node,to_node in self.edges:
-            edge = Edge(to_node,random.random())
+            edge_weight = self.get_random_edge_weight('random')
+            edge = Edge(to_node,edge_weight)
             if(from_node in self.graph.keys()):
                 self.graph[from_node].append(edge)
             else:
                 self.graph[from_node] = [edge]
 
+    def get_random_edge_weight(self,rand_type):
+        if(rand_type == 'random'):
+            return random.random()
+        if(rand_type == 'gauss'):
+            return gaussianRandomgenerator(0,1,0.7,0.1)
+        
     def create_networkx_graph(self,n,k,p=0.5):
         G = nx.watts_strogatz_graph(n=n, k=k, p=p)
         self.edges = list(G.edges())
