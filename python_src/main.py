@@ -56,11 +56,12 @@ if __name__ == '__main__':
 
     if(graph_type=='twitter'):
         # node_ids = [89634510] # outdergree 20
-        # node_ids = [115485051] # outdergree 3383
-        node_ids = [115485051,40981798] # outdergree 3383 and 3216    
+        node_ids = [115485051] # outdergree 3383
+        # node_ids = [115485051, 40981798] # outdergree 3383 and 3216
         # node_ids = [16157855] # outdergree 157
         # node_ids = [14155052] # outdergree 342
         # node_ids = [144040563] # outdergree 628
+        # node_ids = [40981798] #outdegree 3216
 
         grid=0
         graph = Graph()

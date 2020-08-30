@@ -1,6 +1,6 @@
 from mesa import Agent
 from RandomGenerator import *
-
+import random
 class InfluencerAgent(Agent):
 
     def __init__(self, unique_id, model):
@@ -38,12 +38,13 @@ class InfluencerAgent(Agent):
         return self.decision
 
     def interest_update_function(self, influence, decision):
-        gamma = 2
+        gamma = 0.0001
         if decision:
-            self.interest = self.interest + (self.interest*influence)**gamma
+            self.interest = self.interest + (self.interest*influence)*gamma
         else:
-            self.interest = self.interest - (self.interest*influence)**gamma
-        
+            if random.random() < 0.5:
+                self.interest = self.interest - (self.interest*influence)*gamma
+
         if(self.interest<0): self.interest = 0
         if(self.interest>1): self.interest = 1
 
