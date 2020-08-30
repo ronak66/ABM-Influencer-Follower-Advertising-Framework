@@ -6,10 +6,11 @@ class InfluencerAgent(Agent):
     def __init__(self, unique_id, model):
         super().__init__(unique_id, model)
         self.hired = False
+        self.hiring_cost = 0
         self.out_degree = 0
         self.decision = False
         self.interest = RandomGenerator(0, 1)
-        self.resources = RandomGenerator(0, 100)
+        self.budget = RandomGenerator(0, 100)
         self.active = True
         self.sig_strength = 0
         self.influenced_by_node_id = -1
@@ -37,14 +38,18 @@ class InfluencerAgent(Agent):
         return self.decision
 
     def interest_update_function(self, influence, decision):
+        gamma = 2
         if decision:
-            self.interest = self.interest + (self.interest*influence)**100000
+            self.interest = self.interest + (self.interest*influence)**gamma
         else:
-            self.interest = self.interest - (self.interest*influence)**100000
+            self.interest = self.interest - (self.interest*influence)**gamma
+        
+        if(self.interest<0): self.interest = 0
+        if(self.interest>1): self.interest = 1
 
     def decision_function(self, influence, signal_strength, product_cost):
         self.active = randomTrueFalse(0.9)
-        if self.resources >= product_cost and self.active:
+        if self.budget >= product_cost and self.active:
             decision = RandomGenerator(0, 1) < (self.interest * influence * signal_strength)
         else:
             decision = False

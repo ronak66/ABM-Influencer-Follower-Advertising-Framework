@@ -137,10 +137,27 @@ class InfluencerAdvertisingModel(Model):
                 if(ngb_agent.decision == False):
                     ngb_agent.update_interest(weight, decision)
 
+    def interest_count(self):
+        count = [0,0,0,0,0,0,0,0,0,0]
+        for node_id, agent in self.id_agent_mp.items():
+            if(agent.interest<=0.1 and agent.interest>=0): count[0] += 1
+            if(agent.interest<=0.2 and agent.interest>0.1): count[1] += 1
+            if(agent.interest<=0.3 and agent.interest>0.2): count[2] += 1
+            if(agent.interest<=0.4 and agent.interest>0.3): count[3] += 1
+            if(agent.interest<=0.5 and agent.interest>0.4): count[4] += 1
+            if(agent.interest<=0.6 and agent.interest>0.5): count[5] += 1
+            if(agent.interest<=0.7 and agent.interest>0.6): count[6] += 1            
+            if(agent.interest<=0.8 and agent.interest>0.7): count[7] += 1
+            if(agent.interest<=0.9 and agent.interest>0.8): count[8] += 1
+            if(agent.interest<=1 and agent.interest>0.9): count[9] += 1
+
+        return count
+
     def step(self):
+        print(self.interest_count())   
         n = self.bfs_queue.qsize()
         self.datacollector.collect(self)
         for _ in range(n):
             node_id = self.bfs_queue.get()
             self.propagate_from_node(node_id)
-        self.current_step += 1        
+        self.current_step += 1     
