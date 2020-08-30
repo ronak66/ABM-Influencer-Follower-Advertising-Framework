@@ -12,6 +12,7 @@ class InfluencerAgent(Agent):
         self.resources = RandomGenerator(0, 100)
         self.active = True
         self.sig_strength = 0
+        self.influenced_by_node_id = -1
 
     def get_outDegree(self):
         return self.out_degree
@@ -44,7 +45,8 @@ class InfluencerAgent(Agent):
     def decision_function(self, influence, signal_strength, product_cost):
         self.active = randomTrueFalse(0.9)
         if self.resources >= product_cost and self.active:
-            decision = RandomGenerator(0, 1) < (self.interest * influence * signal_strength)
+            # decision = RandomGenerator(0, 1) < (self.interest * influence * signal_strength)
+            decision = RandomGenerator(0, 1) < (1 * influence * signal_strength)
         else:
             decision = False
         return decision

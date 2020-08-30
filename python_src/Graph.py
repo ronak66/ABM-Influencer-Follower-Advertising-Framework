@@ -6,10 +6,6 @@ class Graph():
 
     def __init__(self):        
         self.graph = {}
-        # if(graph_type=='networkx'):
-        #     self.create_networkx_graph(n,k,p)
-        # if(graph_type=='twitter'):
-        #     self.create_twitter_graph(filepath)
         
     def assign_edge_weights(self):
         for from_node,to_node in self.edges:

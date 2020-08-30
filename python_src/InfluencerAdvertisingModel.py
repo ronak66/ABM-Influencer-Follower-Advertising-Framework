@@ -94,11 +94,19 @@ class InfluencerAdvertisingModel(Model):
             self.bfs_queue.put(node_id)
             self.signal_strength = self.id_agent_mp[node_id].sig_strength
 
+    def sig_decay(self, sig_strength, bfs_level):
+        return sig_strength * (bfs_level**-(2))
+
     def propagate_from_node(self,node_id):
         '''
         Given a node, propagates the campaign
         Makes the decision for all the neighours of the given node
         '''
+        if(self.current_step==1):
+            influenced_by = node_id
+        else:
+            influenced_by = self.id_agent_mp[node_id].influenced_by_node_id
+        signal_strength = self.id_agent_mp[influenced_by].sig_strength
 
         if(node_id in self.graph.graph.keys()):
             for _, ngb_edge in enumerate(self.graph.graph[node_id]):
@@ -108,10 +116,11 @@ class InfluencerAdvertisingModel(Model):
                 ngb_agent = self.id_agent_mp[ngb_id]
 
                 if(ngb_agent.decision == False and ngb_agent.hired == False):
-                    decay_factor = self.sig_decay(self.signal_strength, self.current_step)
+                    decay_factor = self.sig_decay(signal_strength, self.current_step)
                     decision = ngb_agent.make_decision(weight, decay_factor, self.product_cost)
                     self.update_ngb_nodes_interest(node_id, decision)
                     if(decision == True):
+                        ngb_agent.influenced_by_node_id = influenced_by
                         self.bfs_queue.put(ngb_id)
 
     def update_ngb_nodes_interest(self,node_id, decision):
@@ -127,9 +136,6 @@ class InfluencerAdvertisingModel(Model):
 
                 if(ngb_agent.decision == False):
                     ngb_agent.update_interest(weight, decision)
-
-    def sig_decay(self, sig_strength, bfs_level):
-        return sig_strength * (bfs_level**-(1))
 
     def step(self):
         n = self.bfs_queue.qsize()
