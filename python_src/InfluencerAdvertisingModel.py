@@ -139,7 +139,7 @@ class InfluencerAdvertisingModel(Model):
 
     def interest_count(self):
         count = [0,0,0,0,0,0,0,0,0,0]
-        for node_id, agent in self.id_agent_mp.items():
+        for _, agent in self.id_agent_mp.items():
             if(agent.interest<=0.1 and agent.interest>=0): count[0] += 1
             if(agent.interest<=0.2 and agent.interest>0.1): count[1] += 1
             if(agent.interest<=0.3 and agent.interest>0.2): count[2] += 1
