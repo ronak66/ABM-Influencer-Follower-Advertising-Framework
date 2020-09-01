@@ -164,8 +164,8 @@ class InfluencerAdvertisingModel(Model):
         plt.title('Distribution of Interest in the Agent Population')
         plt.savefig('../experimental_results/interest_distribution/gamma=0.01/step{}.png'.format(self.current_step))
     def step(self):
-        self.interest_histogram(self.interest_count())
-        # print(self.interest_count())
+#         self.interest_histogram(self.interest_count())
+        print(self.interest_count())
         n = self.bfs_queue.qsize()
         self.datacollector.collect(self)
         for _ in range(n):
