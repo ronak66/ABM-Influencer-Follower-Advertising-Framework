@@ -38,12 +38,12 @@ class InfluencerAgent(Agent):
         return self.decision
 
     def interest_update_function(self, influence, decision):
-        gamma = 1
+        gamma = 0.01
         if decision:
-            self.interest = self.interest + (self.interest*influence)*gamma
+            self.interest = self.interest + (self.interest*influence)
         else:
-            if randomTrueFalse(0.001):
-                self.interest = self.interest - (self.interest*influence)*gamma
+            if randomTrueFalse(gamma):
+                self.interest = self.interest - (self.interest*influence)
 
         if(self.interest<0): self.interest = 0
         if(self.interest>1): self.interest = 1

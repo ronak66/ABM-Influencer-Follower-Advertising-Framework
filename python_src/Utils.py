@@ -29,4 +29,6 @@ class Utils:
                 val = list(val)
                 f.write(str(val[0]) + " " + str(val[1]) + "\n")
 
-
+if __name__ == "__main__":
+    # Utils.clean_dataset("/home/ajayrr/Semester7/AI/project/dataset/gplus/gplus_combined.txt", "/home/ajayrr/Semester7/AI/project/ABM-Influencer-Follower-Advertising-Framework/data/cleaned_gplus_combined.txt")
+    Utils.id_degree_file_genrator("/home/ajayrr/Semester7/AI/project/ABM-Influencer-Follower-Advertising-Framework/data/cleaned_gplus_combined.txt", "/home/ajayrr/Semester7/AI/project/ABM-Influencer-Follower-Advertising-Framework/data/gplus_id_degree.txt")

@@ -1,10 +1,10 @@
 import random
 from queue import Queue
-
+import matplotlib.pyplot as plt
 from mesa import Model
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
-
+import numpy as np
 from InfluencerAgent import InfluencerAgent
 class InfluencerAdvertisingModel(Model):
 
@@ -153,8 +153,19 @@ class InfluencerAdvertisingModel(Model):
 
         return count
 
+    def interest_histogram(self, interest_data):
+        bin_edges = np.arange(0.1, 1.1, 0.1)
+        plt.figure(self.current_step)
+        plt.bar(bin_edges, interest_data, width = 0.05, alpha = 0.9)
+        plt.grid(axis = 'y')
+        plt.xticks(bin_edges)
+        plt.xlabel('Interval (upperlimit)', horizontalalignment='center')
+        plt.ylabel('Number of Agents')
+        plt.title('Distribution of Interest in the Agent Population')
+        plt.savefig('../experimental_results/interest_distribution/gamma=0.01/step{}.png'.format(self.current_step))
     def step(self):
-        print(self.interest_count())
+        self.interest_histogram(self.interest_count())
+        # print(self.interest_count())
         n = self.bfs_queue.qsize()
         self.datacollector.collect(self)
         for _ in range(n):

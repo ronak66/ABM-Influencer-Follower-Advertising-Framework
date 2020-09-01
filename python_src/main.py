@@ -66,6 +66,13 @@ if __name__ == '__main__':
         grid=0
         graph = Graph()
         graph.create_twitter_graph(filepath='../data/cleaned_twitter_combined.txt')
+    if(graph_type=='gplus'):
+
+        node_ids = [111091089527727420853] #outdegree 17055
+
+        grid=0
+        graph = Graph()
+        graph.create_twitter_graph(filepath='../data/cleaned_gplus_combined.txt')
 
     params = {
         "width":width,
