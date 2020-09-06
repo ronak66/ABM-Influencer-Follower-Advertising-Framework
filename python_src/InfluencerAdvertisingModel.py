@@ -20,7 +20,6 @@ class InfluencerAdvertisingModel(Model):
         self.running = True
         self.product_cost = product_cost
         self.current_step = 1
-        self.signal_strength = 0
         self.visited_nodes = set()
 
         self.setup_datacollector()
@@ -31,7 +30,8 @@ class InfluencerAdvertisingModel(Model):
             self.grid = MultiGrid(width, height, True)
             self.setup_grid()
 
-        self.initialize_campaign_marketers(node_ids)
+        # self.initialize_campaign_marketers(node_ids)
+        self.campaign_marketers = node_ids
 
     def number_bought(self,model):
         count=0
@@ -85,15 +85,14 @@ class InfluencerAdvertisingModel(Model):
                     self.grid.place_agent(self.id_agent_mp[node_id], (col, row))
                     node_id+=1
 
-    def initialize_campaign_marketers(self,node_ids):
+    def initialize_campaign_marketers_at_step(self):
         '''
         All the node ids who start the campaign propagation
         '''
-        for node_id in node_ids:
+        for node_id in self.campaign_marketers.get(self.current_step,[]):
             print("="*80,self.id_agent_mp[node_id].get_outDegree(),sep='\n')
             self.id_agent_mp[node_id].hired = True
             self.bfs_queue.put(node_id)
-            self.signal_strength = self.id_agent_mp[node_id].sig_strength
 
     def sig_decay(self, sig_strength, bfs_level):
         return sig_strength * (bfs_level**-(2))
@@ -103,7 +102,7 @@ class InfluencerAdvertisingModel(Model):
         Given a node, propagates the campaign
         Makes the decision for all the neighours of the given node
         '''
-        if(self.current_step==1):
+        if(node_id in self.campaign_marketers.get(self.current_step,[])):
             influenced_by = node_id
         else:
             influenced_by = self.id_agent_mp[node_id].influenced_by_node_id
@@ -165,9 +164,11 @@ class InfluencerAdvertisingModel(Model):
         plt.ylabel('Number of Agents')
         plt.title('Distribution of Interest in the Agent Population')
         plt.savefig('../experimental_results/interest_distribution/gamma=0.01/step{}.png'.format(self.current_step))
+
     def step(self):
-#         self.interest_histogram(self.interest_count())
         # print(self.interest_count())
+        self.initialize_campaign_marketers_at_step()
+
         print('Total people reached: ', len(self.visited_nodes))
         n = self.bfs_queue.qsize()
         self.datacollector.collect(self)

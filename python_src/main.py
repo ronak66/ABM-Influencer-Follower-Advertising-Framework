@@ -49,7 +49,9 @@ if __name__ == '__main__':
     # graph_type='networkx'
 
     if(graph_type=='networkx'):
-        node_ids = [1]
+        node_ids = {
+            1: [1]
+        }
         grid=1
         graph = Graph()
         graph.create_networkx_graph(n=number_of_nodes, k=250)
@@ -60,15 +62,23 @@ if __name__ == '__main__':
         # node_ids = [115485051, 40981798] # outdergree 3383 and 3216
         # node_ids = [16157855] # outdergree 157
         # node_ids = [14155052] # outdergree 342
-        node_ids = [144040563] # outdergree 628
+        # node_ids = [144040563] # outdergree 628
         # node_ids = [40981798] #outdegree 3216
+
+        node_ids = {
+            1:  [115485051],
+            3: [89634510]
+        }
 
         grid=0
         graph = Graph()
         graph.create_twitter_graph(filepath='../data/cleaned_twitter_combined.txt')
+
     if(graph_type=='gplus'):
 
-        node_ids = [111091089527727420853] #outdegree 17055
+        node_ids = {
+            1: [111091089527727420853] #outdegree 17055
+        }
 
         grid=0
         graph = Graph()
