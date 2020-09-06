@@ -21,6 +21,7 @@ class InfluencerAdvertisingModel(Model):
         self.product_cost = product_cost
         self.current_step = 1
         self.signal_strength = 0
+        self.visited_nodes = set()
 
         self.setup_datacollector()
         self.generate_agents()
@@ -116,6 +117,7 @@ class InfluencerAdvertisingModel(Model):
                 ngb_agent = self.id_agent_mp[ngb_id]
 
                 if(ngb_agent.decision == False and ngb_agent.hired == False):
+                    self.visited_nodes.add(ngb_agent)
                     decay_factor = self.sig_decay(signal_strength, self.current_step)
                     decision = ngb_agent.make_decision(weight, decay_factor, self.product_cost)
                     self.update_ngb_nodes_interest(node_id, decision)
@@ -165,7 +167,8 @@ class InfluencerAdvertisingModel(Model):
         plt.savefig('../experimental_results/interest_distribution/gamma=0.01/step{}.png'.format(self.current_step))
     def step(self):
 #         self.interest_histogram(self.interest_count())
-        print(self.interest_count())
+        # print(self.interest_count())
+        print('Total people reached: ', len(self.visited_nodes))
         n = self.bfs_queue.qsize()
         self.datacollector.collect(self)
         for _ in range(n):
