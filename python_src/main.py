@@ -6,6 +6,7 @@ from mesa.visualization.modules import CanvasGrid
 from mesa.visualization.modules import ChartModule
 from mesa.visualization.ModularVisualization import ModularServer
 
+import random
 
 
 def agent_portrayal(agent):
@@ -40,7 +41,21 @@ def display(graph_type):
         return [grid,chart1,chart2]
     return [chart1,chart2]
 
+def get_node_ids_inRange(filepath, x, y):
+    node_ids = []
+    with open(filepath) as f:
+        lines = f.readlines()
+        for line in lines:
+            line = line.strip().split(',')
+            id = int(line[0])
+            outDegree = int(line[1])
 
+            if outDegree >= x and outDegree <=y:
+                node_ids.append(id)
+    return node_ids
+
+def choose_random_advertisers(node_ids, n):
+    return random.sample(node_ids, n)
 if __name__ == '__main__':
 
     width = height = 50
@@ -65,9 +80,14 @@ if __name__ == '__main__':
         # node_ids = [144040563] # outdergree 628
         # node_ids = [40981798] #outdegree 3216
 
+        node_ids_inRange = get_node_ids_inRange("../data/twitter_id_degree.txt",600,699)
+        advertiser_list = choose_random_advertisers(node_ids_inRange, 5)
+        print("Advertiser nodes: ", advertiser_list)
         node_ids = {
-            1:  [115485051],
-            3: [89634510]
+            # 1:  [115485051]
+            # 3: [89634510]
+            1: advertiser_list
+
         }
 
         grid=0
