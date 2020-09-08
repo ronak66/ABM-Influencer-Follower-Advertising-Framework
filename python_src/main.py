@@ -43,6 +43,7 @@ def display(graph_type):
 
 def get_node_ids_inRange(filepath, x, y):
     node_ids = []
+    outdegrees = []
     with open(filepath) as f:
         lines = f.readlines()
         for line in lines:
@@ -52,10 +53,18 @@ def get_node_ids_inRange(filepath, x, y):
 
             if outDegree >= x and outDegree <=y:
                 node_ids.append(id)
-    return node_ids
+                outdegrees.append(outDegree)
+    return node_ids, outdegrees
 
-def choose_random_advertisers(node_ids, n):
-    return random.sample(node_ids, n)
+def choose_random_advertisers(node_ids, outdegrees, n):
+    advertiser_list = []
+    advertiser_outdegrees = []
+    idx = random.sample(range(0, len(node_ids)), n)
+
+    for i in idx:
+        advertiser_list.append(node_ids[i])
+        advertiser_outdegrees.append(outdegrees[i])
+    return advertiser_list, advertiser_outdegrees
 if __name__ == '__main__':
 
     width = height = 50
@@ -80,14 +89,14 @@ if __name__ == '__main__':
         # node_ids = [144040563] # outdergree 628
         # node_ids = [40981798] #outdegree 3216
 
-        node_ids_inRange = get_node_ids_inRange("../data/twitter_id_degree.txt",600,699)
-        advertiser_list = choose_random_advertisers(node_ids_inRange, 5)
-        print("Advertiser nodes: ", advertiser_list)
+        node_ids_inRange, outdegrees = get_node_ids_inRange("../data/twitter_id_degree.txt",1100,1200)
+        advertiser_list, advertiser_outdegrees = choose_random_advertisers(node_ids_inRange, outdegrees, 3)
+        print("Advertiser nodes: ", advertiser_list, "Total out degree: ", sum(advertiser_outdegrees))
+
         node_ids = {
             # 1:  [115485051]
             # 3: [89634510]
             1: advertiser_list
-
         }
 
         grid=0
