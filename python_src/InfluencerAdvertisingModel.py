@@ -30,7 +30,6 @@ class InfluencerAdvertisingModel(Model):
         self.setup_datacollector()
         self.generate_agents()
         self.assign_attributes()
-        self.update_influence_wrt_engagement()
 
         if(grid==1):
             self.grid = MultiGrid(width, height, True)
@@ -78,7 +77,7 @@ class InfluencerAdvertisingModel(Model):
                 agent.set_outDegree(0)
 
     def update_influence_wrt_engagement(self):
-        gamma = 0.9
+        gamma = 0.7
         for agent_id, edges in self.graph.graph.items():
             engagement_rate = self.id_agent_mp[agent_id].engagement_rate
             for edge in edges:
@@ -124,13 +123,19 @@ class InfluencerAdvertisingModel(Model):
             influenced_by = node_id
         else:
             influenced_by = self.id_agent_mp[node_id].influenced_by_node_id
+
         signal_strength = self.id_agent_mp[influenced_by].sig_strength
+        engagement_rate = self.id_agent_mp[node_id].engagement_rate
+        hired = self.id_agent_mp[node_id].hired
+        gamma = 0.7
 
         if(node_id in self.graph.graph.keys()):
             for _, ngb_edge in enumerate(self.graph.graph[node_id]):
 
                 ngb_id = ngb_edge.node_id
                 weight = ngb_edge.weight
+                if(hired and randomTrueFalse(engagement_rate/100)):
+                    weight += gamma
                 ngb_agent = self.id_agent_mp[ngb_id]
 
                 if(ngb_agent.decision == False and ngb_agent.hired == False):

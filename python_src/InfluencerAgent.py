@@ -33,10 +33,10 @@ class InfluencerAgent(Agent):
 
     def set_engagement_rate(self):
         mapping = {
-            (0,30): 7.2,
-            (31,180): 5.3,
-            (181,300): 3.7,
-            (301,3000): 2.1,
+            (0,300): 7.2,
+            (301,1000): 5.3,
+            (1000,2000): 3.7,
+            (2001,3000): 2.1,
             (3001,None): 1.1
         }
         for interval,rate in mapping.items():
