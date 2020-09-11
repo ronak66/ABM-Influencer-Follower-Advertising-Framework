@@ -14,6 +14,7 @@ class InfluencerAgent(Agent):
         self.active = True
         self.sig_strength = 0
         self.influenced_by_node_id = -1
+        self.engagement_rate = 0
 
     def get_outDegree(self):
         return self.out_degree
@@ -29,6 +30,23 @@ class InfluencerAgent(Agent):
 
     def get_decision(self):
         return self.decision
+
+    def set_engagement_rate(self):
+        mapping = {
+            (0,30): 7.2,
+            (31,180): 5.3,
+            (181,300): 3.7,
+            (301,3000): 2.1,
+            (3001,None): 1.1
+        }
+        for interval,rate in mapping.items():
+            lower, upper = interval
+            if(self.out_degree>=lower):
+                if(upper == None):
+                    self.engagement_rate = rate
+                elif(self.out_degree<=upper):
+                    self.engagement_rate = rate
+                    break
 
     def update_interest(self, influence, decision):
         self.interest_update_function(influence, decision)

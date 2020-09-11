@@ -80,13 +80,12 @@ if __name__ == '__main__':
         # node_ids = [144040563] # outdergree 628
         # node_ids = [40981798] #outdegree 3216
 
-        node_ids_inRange = get_node_ids_inRange("../data/twitter_id_degree.txt",600,699)
-        advertiser_list = choose_random_advertisers(node_ids_inRange, 5)
+        node_ids_inRange = get_node_ids_inRange("../data/twitter_id_degree.txt",300,350)
+        advertiser_list = choose_random_advertisers(node_ids_inRange, 12)
         print("Advertiser nodes: ", advertiser_list)
         node_ids = {
-            # 1:  [115485051]
-            # 3: [89634510]
-            1: advertiser_list
+            1:  [115485051]
+            # 1: advertiser_list
 
         }
 

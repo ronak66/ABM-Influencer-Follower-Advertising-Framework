@@ -1,11 +1,16 @@
 import random
+import numpy as np
 from queue import Queue
 import matplotlib.pyplot as plt
+
 from mesa import Model
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
-import numpy as np
 from InfluencerAgent import InfluencerAgent
+
+from RandomGenerator import randomTrueFalse
+
+
 class InfluencerAdvertisingModel(Model):
 
     def __init__(self, width, height, Graph, node_ids, product_cost, grid=1):
@@ -25,6 +30,7 @@ class InfluencerAdvertisingModel(Model):
         self.setup_datacollector()
         self.generate_agents()
         self.assign_attributes()
+        self.update_influence_wrt_engagement()
 
         if(grid==1):
             self.grid = MultiGrid(width, height, True)
@@ -63,10 +69,22 @@ class InfluencerAdvertisingModel(Model):
     def assign_attributes(self):
         for node_id, agent in self.id_agent_mp.items():
             if(node_id in self.graph.graph.keys()):
-                agent.set_outDegree(len(self.graph.graph[node_id]))
-                agent.set_sigStrength(agent.out_degree / 3383)
+                degree = len(self.graph.graph[node_id])
+                agent.set_outDegree(degree)
+                agent.set_engagement_rate()
+                # agent.set_sigStrength(agent.out_degree / 3383)
+                agent.set_sigStrength(1)
             else:
                 agent.set_outDegree(0)
+
+    def update_influence_wrt_engagement(self):
+        gamma = 0.9
+        for agent_id, edges in self.graph.graph.items():
+            engagement_rate = self.id_agent_mp[agent_id].engagement_rate
+            for edge in edges:
+                if(randomTrueFalse(engagement_rate/100)):
+                    edge.set_weight(edge.weight + gamma)
+
 
     def setup_grid(self,random_position=1):
         '''

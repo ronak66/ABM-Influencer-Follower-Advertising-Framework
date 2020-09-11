@@ -52,3 +52,10 @@ class Edge():
     def __init__(self,node_id,weight):
         self.node_id = node_id
         self.weight = weight
+
+    def set_weight(self,weight):
+        if(weight>1):
+            weight = 1
+        if(weight<0):
+            weight = 0
+        self.weight = weight
