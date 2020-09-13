@@ -33,11 +33,14 @@ class InfluencerAgent(Agent):
 
     def set_engagement_rate(self):
         mapping = {
-            (0,300): 7.2,
-            (301,1000): 5.3,
-            (1000,2000): 3.7,
-            (2001,3000): 2.1,
-            (3001,None): 1.1
+            (0, 50): 35.0,
+            (50,200): 30.0,
+            (201,400): 25.0,
+            (401,1000): 15.0,
+            (1001,1500): 10.0,
+            (1501,3000): 5.0,
+            (3001,None): 1.0
+            # (3001,None): 0.1
         }
         for interval,rate in mapping.items():
             lower, upper = interval
@@ -67,7 +70,7 @@ class InfluencerAgent(Agent):
         if(self.interest>1): self.interest = 1
 
     def decision_function(self, influence, signal_strength, product_cost):
-        self.active = randomTrueFalse(0.9)
+        self.active = randomTrueFalse(0.95)
         if self.budget >= product_cost and self.active:
             decision = RandomGenerator(0, 1) < (self.interest * influence * signal_strength)
         else:

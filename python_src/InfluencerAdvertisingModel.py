@@ -26,7 +26,7 @@ class InfluencerAdvertisingModel(Model):
         self.product_cost = product_cost
         self.current_step = 1
         self.visited_nodes = set()
-
+        self.engage_count = 0
         self.setup_datacollector()
         self.generate_agents()
         self.assign_attributes()
@@ -127,6 +127,7 @@ class InfluencerAdvertisingModel(Model):
         signal_strength = self.id_agent_mp[influenced_by].sig_strength
         engagement_rate = self.id_agent_mp[node_id].engagement_rate
         hired = self.id_agent_mp[node_id].hired
+
         gamma = 0.7
 
         if(node_id in self.graph.graph.keys()):
@@ -134,9 +135,11 @@ class InfluencerAdvertisingModel(Model):
 
                 ngb_id = ngb_edge.node_id
                 weight = ngb_edge.weight
-                if(hired and randomTrueFalse(engagement_rate/100)):
-                    weight += gamma
                 ngb_agent = self.id_agent_mp[ngb_id]
+                if(hired and randomTrueFalse(engagement_rate/100)):
+
+                    weight += gamma
+                    self.engage_count += 1
 
                 if(ngb_agent.decision == False and ngb_agent.hired == False):
                     self.visited_nodes.add(ngb_agent)
@@ -189,7 +192,8 @@ class InfluencerAdvertisingModel(Model):
         plt.savefig('../experimental_results/interest_distribution/gamma=0.01/step{}.png'.format(self.current_step))
 
     def step(self):
-        # print(self.interest_count())
+        print(self.interest_count())
+
         self.initialize_campaign_marketers_at_step()
 
         print('Total people reached: ', len(self.visited_nodes))
@@ -198,4 +202,5 @@ class InfluencerAdvertisingModel(Model):
         for _ in range(n):
             node_id = self.bfs_queue.get()
             self.propagate_from_node(node_id)
+        print("Engagement count: ",self.engage_count)
         self.current_step += 1
