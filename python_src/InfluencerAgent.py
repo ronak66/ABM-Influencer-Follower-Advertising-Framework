@@ -9,7 +9,7 @@ class InfluencerAgent(Agent):
         self.hiring_cost = 0
         self.out_degree = 0
         self.decision = False
-        self.interest = RandomGenerator(0, 1)
+        self.interest = gaussianRandomgenerator(0, 1, 0.5, 0.2):
         self.budget = RandomGenerator(0, 100)
         self.active = True
         self.sig_strength = 0
@@ -49,6 +49,25 @@ class InfluencerAgent(Agent):
                     self.engagement_rate = rate
                 elif(self.out_degree<=upper):
                     self.engagement_rate = rate
+                    break
+
+    def set_hiring_cost(self):
+        mapping = {
+            (0, 50): 5,
+            (51,200): 10,
+            (201,400): 40,
+            (401,1000): 40,
+            (1001,1500): 30,
+            (1501,3000): 60,
+            (3001,None): 200
+        }
+        for interval,rate in mapping.items():
+            lower, upper = interval
+            if(self.out_degree>=lower):
+                if(upper == None):
+                    self.hiring_cost = rate
+                elif(self.out_degree<=upper):
+                    self.hiring_cost = rate
                     break
 
     def update_interest(self, influence, decision):

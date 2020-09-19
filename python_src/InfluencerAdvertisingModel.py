@@ -71,6 +71,7 @@ class InfluencerAdvertisingModel(Model):
                 degree = len(self.graph.graph[node_id])
                 agent.set_outDegree(degree)
                 agent.set_engagement_rate()
+                agent.set_hiring_cost()
                 # agent.set_sigStrength(agent.out_degree / 3383)
                 agent.set_sigStrength(1)
             else:
