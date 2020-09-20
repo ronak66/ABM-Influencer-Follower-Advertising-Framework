@@ -13,7 +13,7 @@ from RandomGenerator import randomTrueFalse
 
 class InfluencerAdvertisingModel(Model):
 
-    def __init__(self, width, height, Graph, node_ids, product_cost, grid=1):
+    def __init__(self, width, height, Graph, node_ids, product_cost, hiring_budget, grid=1):
         '''
         Graph = {
             <node id> : [ <Edge Object> ]
@@ -27,6 +27,8 @@ class InfluencerAdvertisingModel(Model):
         self.current_step = 1
         self.visited_nodes = set()
         self.engage_count = 0
+        self.total_hiring_cost = 0
+        self.hiring_budget = hiring_budget
         self.setup_datacollector()
         self.generate_agents()
         self.assign_attributes()
@@ -110,6 +112,7 @@ class InfluencerAdvertisingModel(Model):
         for node_id in self.campaign_marketers.get(self.current_step,[]):
             print("="*80,self.id_agent_mp[node_id].get_outDegree(),sep='\n')
             self.id_agent_mp[node_id].hired = True
+            self.total_hiring_cost += self.id_agent_mp[node_id].hiring_cost
             self.bfs_queue.put(node_id)
 
     def sig_decay(self, sig_strength, bfs_level):
@@ -193,15 +196,14 @@ class InfluencerAdvertisingModel(Model):
         plt.savefig('../experimental_results/interest_distribution/gamma=0.01/step{}.png'.format(self.current_step))
 
     def step(self):
-        print(self.interest_count())
+        print('interest Distribution: ', self.interest_count())
 
         self.initialize_campaign_marketers_at_step()
-
+        print('Total Hiring Cost: ', self.total_hiring_cost, 'Hiring Budget: ', self.hiring_budget)
         print('Total people reached: ', len(self.visited_nodes))
         n = self.bfs_queue.qsize()
         self.datacollector.collect(self)
         for _ in range(n):
             node_id = self.bfs_queue.get()
             self.propagate_from_node(node_id)
-        print("Engagement count: ",self.engage_count)
         self.current_step += 1

@@ -9,7 +9,8 @@ class InfluencerAgent(Agent):
         self.hiring_cost = 0
         self.out_degree = 0
         self.decision = False
-        self.interest = gaussianRandomgenerator(0, 1, 0.5, 0.2):
+        self.interest = gaussianRandomgenerator(0, 1, 0.5, 0.2)
+        # self.interest = RandomGenerator(0,1)
         self.budget = RandomGenerator(0, 100)
         self.active = True
         self.sig_strength = 0
@@ -33,11 +34,11 @@ class InfluencerAgent(Agent):
 
     def set_engagement_rate(self):
         mapping = {
-            (0, 50): 35.0,
-            (50,200): 30.0,
-            (201,400): 25.0,
-            (401,1000): 15.0,
-            (1001,1500): 10.0,
+            (0, 50): 25.0,
+            (50,200): 18.0,
+            (201,400): 12.0,
+            (401,1000): 8.0,
+            (1001,1500): 7.0,
             (1501,3000): 5.0,
             (3001,None): 1.0
             # (3001,None): 0.1
