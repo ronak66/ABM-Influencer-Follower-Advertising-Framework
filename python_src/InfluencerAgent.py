@@ -9,7 +9,7 @@ class InfluencerAgent(Agent):
         self.hiring_cost = 0
         self.out_degree = 0
         self.decision = False
-        self.interest = gaussianRandomgenerator(0, 1, 0.5, 0.2)
+        self.interest = gaussianRandomgenerator(0, 1, 0.8, 0.2)
         # self.interest = RandomGenerator(0,1)
         self.budget = RandomGenerator(0, 100)
         self.active = True
@@ -57,7 +57,7 @@ class InfluencerAgent(Agent):
             (0, 50): 5,
             (51,200): 10,
             (201,400): 40,
-            (401,1000): 40,
+            (401,1000): 45,
             (1001,1500): 30,
             (1501,3000): 60,
             (3001,None): 200

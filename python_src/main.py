@@ -56,10 +56,15 @@ def get_node_ids_inRange(filepath, x, y):
                 outdegrees.append(outDegree)
     return node_ids, outdegrees
 
-def choose_random_advertisers(node_ids, outdegrees, n):
+def choose_random_advertisers(node_ids, outdegrees, n, sort=0):
     advertiser_list = []
     advertiser_outdegrees = []
     idx = random.sample(range(0, len(node_ids)), n)
+
+    if(sort==1):
+        sorted_ids_wrt_outdegree = [x for _,x in sorted(zip(outdegrees,node_ids))]
+        sorted_outdegree = [y for y,_ in sorted(zip(outdegrees,node_ids))]
+        return sorted_ids_wrt_outdegree[-n:], sorted_outdegree[-n:]
 
     for i in idx:
         advertiser_list.append(node_ids[i])
@@ -93,9 +98,9 @@ if __name__ == '__main__':
         # node_ids = [144040563] # outdergree 628
         # node_ids = [40981798] #outdegree 3216
 
-        node_ids_inRange, outdegrees = get_node_ids_inRange("../data/twitter_id_degree.txt", 1, 50)
-        advertiser_list, advertiser_outdegrees = choose_random_advertisers(node_ids_inRange, outdegrees, 40)
-        print("Advertiser nodes: ", advertiser_list, "Total out degree: ", sum(advertiser_outdegrees))
+        node_ids_inRange, outdegrees = get_node_ids_inRange("../data/twitter_id_degree.txt", 3000, 4000)
+        advertiser_list, advertiser_outdegrees = choose_random_advertisers(node_ids_inRange, outdegrees, 1, sort=1)
+        print("Advertiser nodes: ", advertiser_list, "\nTotal out degree: ", sum(advertiser_outdegrees))
         node_ids = {
             # 1:  [115485051] #1 advertiser
 
