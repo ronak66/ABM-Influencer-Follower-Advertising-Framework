@@ -34,14 +34,12 @@ class InfluencerAgent(Agent):
 
     def set_engagement_rate(self):
         mapping = {
-            (0, 50): 25.0,
-            (50,200): 18.0,
-            (201,400): 12.0,
-            (401,1000): 8.0,
-            (1001,1500): 7.0,
-            (1501,3000): 5.0,
-            (3001,None): 1.0
-            # (3001,None): 0.1
+            (0,50): 30,
+            (51,200): 25,
+            (201,700): 18,
+            (701,1500): 12,
+            (1501,3000): 5,
+            (3001,None): 1
         }
         for interval,rate in mapping.items():
             lower, upper = interval
@@ -53,23 +51,25 @@ class InfluencerAgent(Agent):
                     break
 
     def set_hiring_cost(self):
-        mapping = {
-            (0, 50): 5,
-            (51,200): 10,
-            (201,400): 40,
-            (401,1000): 45,
-            (1001,1500): 30,
-            (1501,3000): 60,
-            (3001,None): 200
-        }
-        for interval,rate in mapping.items():
-            lower, upper = interval
-            if(self.out_degree>=lower):
-                if(upper == None):
-                    self.hiring_cost = rate
-                elif(self.out_degree<=upper):
-                    self.hiring_cost = rate
-                    break
+        # mapping = {
+        #     (0, 50): 5,
+        #     (51,200): 10,
+        #     (201,400): 40,
+        #     (401,1000): 45,  #0.1, 0.05, 0.1, 0.045, 0.02, 0.02
+        #     (1001,1500): 30,
+        #     (1501,3000): 60,
+        #     (3001,None): 200
+        # }
+        # for interval,rate in mapping.items():
+        #     lower, upper = interval
+        #     if(self.out_degree>=lower):
+        #         if(upper == None):
+        #             self.hiring_cost = rate
+        #         elif(self.out_degree<=upper):
+        #             self.hiring_cost = rate
+        #             break
+        cost_per_post_per_follower = 0.01
+        self.hiring_cost = cost_per_post_per_follower*self.out_degree
 
     def update_interest(self, influence, decision):
         self.interest_update_function(influence, decision)

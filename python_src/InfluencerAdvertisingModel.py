@@ -200,10 +200,10 @@ class InfluencerAdvertisingModel(Model):
 
         self.initialize_campaign_marketers_at_step()
         print('Total Hiring Cost: ', self.total_hiring_cost, 'Hiring Budget: ', self.hiring_budget)
-        print('Total people reached: ', len(self.visited_nodes))
         n = self.bfs_queue.qsize()
         self.datacollector.collect(self)
         for _ in range(n):
             node_id = self.bfs_queue.get()
             self.propagate_from_node(node_id)
+        print('Total people reached: ', len(self.visited_nodes))            
         self.current_step += 1
