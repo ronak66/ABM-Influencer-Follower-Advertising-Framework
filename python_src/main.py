@@ -71,6 +71,51 @@ def choose_random_advertisers(node_ids, outdegrees, n, sort=0):
         advertiser_outdegrees.append(outdegrees[i])
     return advertiser_list, advertiser_outdegrees
 
+def choose_advertisers_with_HiringConstraint(node_ids, outdegrees, total_hiring_cost):
+    cost_per_post_per_follower = 0.01
+    hiring_cost = 0
+    advertiser_list = []
+    advertiser_outdegrees = []
+
+    sorted_ids_wrt_outdegree = [x for _,x in sorted(zip(outdegrees,node_ids))]
+    sorted_outdegree = [y for y,_ in sorted(zip(outdegrees,node_ids))]
+    idx = random.sample(range(0, len(node_ids)), len(node_ids))
+
+    i=0;
+    while(i<len(idx)):
+        hiring_cost += sorted_outdegree[idx[i]]*cost_per_post_per_follower
+        if hiring_cost > total_hiring_cost:
+            if i == len(idx) - 1:
+                print(i,len(idx)-1)
+                break
+            else:
+                i += 1
+                continue
+
+        advertiser_list.append(sorted_ids_wrt_outdegree[idx[i]])
+        advertiser_outdegrees.append(sorted_outdegree[idx[i]])
+        i += 1
+    print(i)
+    return advertiser_list, advertiser_outdegrees
+
+def choose_best_advertisers_with_HiringConstraint(node_ids, outdegrees, total_hiring_cost):
+    cost_per_post_per_follower = 0.01
+    hiring_cost = 0
+    advertiser_list = []
+    advertiser_outdegrees = []
+
+    sorted_ids_wrt_outdegree = [x for _,x in sorted(zip(outdegrees,node_ids))]
+    sorted_outdegree = [y for y,_ in sorted(zip(outdegrees,node_ids))]
+    i=1;
+    while(hiring_cost < total_hiring_cost):
+        hiring_cost += sorted_outdegree[-i]*cost_per_post_per_follower
+        if hiring_cost > total_hiring_cost:
+            break
+        advertiser_list.append(sorted_ids_wrt_outdegree[-i])
+        advertiser_outdegrees.append(sorted_outdegree[-i])
+        i += 1
+    return advertiser_list, advertiser_outdegrees
+
 if __name__ == '__main__':
 
     ll = [20293613, 57026351, 243079375, 171154131, 15810838, 40974224, 14861285, 10257492, 58930815, 15080671, 92899083, 16135047, 15745674, 169496268, 246500501, 58886037, 16803196, 138530516, 54086230, 319576850, 174540176, 265810013, 24239440, 280629993, 15291335, 9822052, 96994187, 211303345, 18089255, 352828674, 15101693, 361396896, 305364977, 2569261, 53792610, 86300007, 209799012, 19469676, 25541185, 24511456, 268425888, 25948843, 216476063, 15826432, 190388631, 130665252, 243013128, 200127090, 271044958, 324151971, 18952294, 61445012, 14069676, 20449133, 17843236, 15075834, 259763895, 17704895, 21575175, 319459265, 81424707, 144284168, 5680622, 45609049, 191613738, 216030263, 15205995, 277152703, 13761042, 43821761, 15147042, 59168805, 163802710, 63307960, 177264696, 381565337, 406668148, 149680765, 126412041, 109550381, 14298557, 83665015, 282860504, 705663, 9984332, 266941320, 15032882, 19109172, 123348683, 17659206, 48564118, 61356546, 69147333, 13598222, 282484132, 23407381, 422168320, 12069912, 97477051, 34041607, 189158296, 190969105, 21536398, 13085462, 24056199]
@@ -98,11 +143,13 @@ if __name__ == '__main__':
         # node_ids = [144040563] # outdergree 628
         # node_ids = [40981798] #outdegree 3216
 
-        node_ids_inRange, outdegrees = get_node_ids_inRange("../data/twitter_id_degree.txt", 1500, 1550)
-        advertiser_list, advertiser_outdegrees = choose_random_advertisers(node_ids_inRange, outdegrees, 3, sort=1)
-        print("Advertiser nodes: ", advertiser_list, "\nTotal out degree: ", sum(advertiser_outdegrees))
+        node_ids_inRange, outdegrees = get_node_ids_inRange("../data/twitter_id_degree.txt", 3001, 3500)
+        # advertiser_list, advertiser_outdegrees = choose_random_advertisers(node_ids_inRange, outdegrees, 10, sort=0)
+        advertiser_list, advertiser_outdegrees = choose_advertisers_with_HiringConstraint(node_ids_inRange, outdegrees, 68)
+        print("Advertiser nodes: ", advertiser_list, "Number of advertisers: ", len(advertiser_list), "\nTotal out degree: ", sum(advertiser_outdegrees))
         node_ids = {
             1: advertiser_list
+            # 1:[115485051]
         }
 
 
@@ -127,7 +174,7 @@ if __name__ == '__main__':
         "node_ids": node_ids,
         "grid": grid,
         "product_cost": 90,
-        "hiring_budget": 200
+        "hiring_budget": 68
     }
 
     server = ModularServer(
