@@ -9,7 +9,7 @@ class InfluencerAgent(Agent):
         self.hiring_cost = 0
         self.out_degree = 0
         self.decision = False
-        self.interest = gaussianRandomgenerator(0, 1, 0.8, 0.2)
+        self.interest = gaussianRandomgenerator(0, 1, 0.5, 0.2)
         # self.interest = RandomGenerator(0,1)
         self.budget = RandomGenerator(0, 100)
         self.active = True
@@ -44,13 +44,22 @@ class InfluencerAgent(Agent):
         # }
 
         # Networkx ---------------------------
+        # mapping = {
+        #     (1,75): 30,
+        #     (75,150): 25,
+        #     (150,300): 18,
+        #     (300,500): 12,
+        #     (500,700): 5,
+        #     (701,None): 1
+        # }
+
         mapping = {
-            (1,75): 30,
-            (75,150): 25,
-            (150,300): 18,
-            (300,500): 12,
-            (500,700): 5,
-            (701,None): 1
+            (0,75): 30,
+            (76,150): 25,
+            (151,300): 18,
+            (301,500): 12,
+            (501,630): 5,
+            (631,None): 1
         }
         for interval,rate in mapping.items():
             lower, upper = interval

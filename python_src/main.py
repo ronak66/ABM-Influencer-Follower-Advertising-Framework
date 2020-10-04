@@ -7,7 +7,7 @@ from mesa.visualization.modules import ChartModule
 from mesa.visualization.ModularVisualization import ModularServer
 
 import random
-
+from Utils import Utils
 
 def agent_portrayal(agent):
     portrayal = {"Shape": "circle",
@@ -120,8 +120,9 @@ if __name__ == '__main__':
 
     width = height = 50
     number_of_nodes = width*height
-    graph_type='twitter'
+    # graph_type='twitter'
     # graph_type='networkx'
+    graph_type = 'synthetic'
 
     if(graph_type=='networkx'):
         node_ids = {
@@ -130,19 +131,21 @@ if __name__ == '__main__':
         grid=0
         graph = Graph()
         graph.create_networkx_graph(97134, 0.9, 1)
+        Utils.generate_graph_txt(graph)
 
-    if(graph_type=='twitter'):
-        # node_ids = [89634510] # outdergree 20
-        # node_ids = [115485051] # outdergree 3383
-        # node_ids = [115485051, 40981798] # outdergree 3383 and 3216
-        # node_ids = [16157855] # outdergree 157
-        # node_ids = [14155052] # outdergree 342
-        # node_ids = [144040563] # outdergree 628
-        # node_ids = [40981798] #outdegree 3216
+    if (graph_type=='synthetic'):
 
-        node_ids_inRange, outdegrees = get_node_ids_inRange("../data/twitter_id_degree.txt", 3001, 3500)
-        # advertiser_list, advertiser_outdegrees = choose_random_advertisers(node_ids_inRange, outdegrees, 10, sort=0)
-        advertiser_list, advertiser_outdegrees = choose_advertisers_with_HiringConstraint(node_ids_inRange, outdegrees, 68)
+        node_ids_inRange, outdegrees = get_node_ids_inRange("../data/synthetic_network_id_degree.txt", 631, 700)    
+        max_advertiser_list = []
+        max_hiring_cost = 0
+        for _ in range(100):
+          advertiser_list, advertiser_outdegrees = choose_advertisers_with_HiringConstraint(node_ids_inRange, outdegrees, 14)
+          hiring_cost = sum(advertiser_outdegrees)*0.01
+          if(hiring_cost > max_hiring_cost):
+              max_advertiser_list = advertiser_list
+              max_hiring_cost = hiring_cost
+
+        advertiser_list = max_advertiser_list
         print("Advertiser nodes: ", advertiser_list, "Number of advertisers: ", len(advertiser_list), "\nTotal out degree: ", sum(advertiser_outdegrees))
         node_ids = {
             1: advertiser_list
@@ -150,24 +153,45 @@ if __name__ == '__main__':
         }
         grid=0
         graph = Graph()
-        graph.create_twitter_graph(filepath='../data/cleaned_twitter_combined.txt')
+        graph.create_twitter_graph(filepath='../data/synthetic_network.txt')
 
-    if(graph_type=='gplus'):
-        node_ids = {
-            1: [111091089527727420853] #outdegree 17055
-        }
-        grid=0
-        graph = Graph()
-        graph.create_twitter_graph(filepath='../data/cleaned_gplus_combined.txt')
-
+    # if(graph_type=='twitter'):
+    #     # node_ids = [89634510] # outdergree 20
+    #     # node_ids = [115485051] # outdergree 3383
+    #     # node_ids = [115485051, 40981798] # outdergree 3383 and 3216
+    #     # node_ids = [16157855] # outdergree 157
+    #     # node_ids = [14155052] # outdergree 342
+    #     # node_ids = [144040563] # outdergree 628
+    #     # node_ids = [40981798] #outdegree 3216
+    #
+    #     node_ids_inRange, outdegrees = get_node_ids_inRange("../data/twitter_id_degree.txt", 3001, 3500)
+    #     # advertiser_list, advertiser_outdegrees = choose_random_advertisers(node_ids_inRange, outdegrees, 10, sort=0)
+    #     advertiser_list, advertiser_outdegrees = choose_advertisers_with_HiringConstraint(node_ids_inRange, outdegrees, 68)
+    #     print("Advertiser nodes: ", advertiser_list, "Number of advertisers: ", len(advertiser_list), "\nTotal out degree: ", sum(advertiser_outdegrees))
+    #     node_ids = {
+    #         1: advertiser_list
+    #         # 1:[115485051]
+    #     }
+    #     grid=0
+    #     graph = Graph()
+    #     graph.create_twitter_graph(filepath='../data/cleaned_twitter_combined.txt')
+    #
+    # if(graph_type=='gplus'):
+    #     node_ids = {
+    #         1: [111091089527727420853] #outdegree 17055
+    #     }
+    #     grid=0
+    #     graph = Graph()
+    #     graph.create_twitter_graph(filepath='../data/cleaned_gplus_combined.txt')
+    #
     params = {
         "width":width,
         "height":height,
         "Graph": graph,
         "node_ids": node_ids,
         "grid": grid,
-        "product_cost": 90,
-        "hiring_budget": 68
+        "product_cost": 10,
+        "hiring_budget": 14
     }
 
     server = ModularServer(
