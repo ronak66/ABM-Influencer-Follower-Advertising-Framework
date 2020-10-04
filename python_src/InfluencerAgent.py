@@ -33,13 +33,24 @@ class InfluencerAgent(Agent):
         return self.decision
 
     def set_engagement_rate(self):
+        # Twitter ---------------------------
+        # mapping = {
+        #     (0,50): 30,
+        #     (51,200): 25,
+        #     (201,700): 18,
+        #     (701,1500): 12,
+        #     (1501,3000): 5,
+        #     (3001,None): 1
+        # }
+
+        # Networkx ---------------------------
         mapping = {
-            (0,50): 30,
-            (51,200): 25,
-            (201,700): 18,
-            (701,1500): 12,
-            (1501,3000): 5,
-            (3001,None): 1
+            (1,75): 30,
+            (75,150): 25,
+            (150,300): 18,
+            (300,500): 12,
+            (500,700): 5,
+            (701,None): 1
         }
         for interval,rate in mapping.items():
             lower, upper = interval

@@ -1,6 +1,7 @@
 import random
 import networkx as nx
 
+import fittingCode.socialModels as sm
 from RandomGenerator import gaussianRandomgenerator
 
 
@@ -24,8 +25,9 @@ class Graph():
         if(rand_type == 'gauss'):
             return gaussianRandomgenerator(0,1,0.7,0.1)
         
-    def create_networkx_graph(self,n,k,p=0.5):
-        G = nx.watts_strogatz_graph(n=n, k=k, p=p)
+    def create_networkx_graph(self,n,k,p):
+        # G = nx.watts_strogatz_graph(n=n, k=k, p=p)
+        G = sm.nearestNeighbor_mod(n,k,p)
         self.edges = list(G.edges())
         self.nodes = list(G.nodes())
 

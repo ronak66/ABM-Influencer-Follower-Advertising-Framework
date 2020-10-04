@@ -29,8 +29,35 @@ class Utils:
                 val = list(val)
                 f.write(str(val[0]) + " " + str(val[1]) + "\n")
 
+    @staticmethod
+    def plot_distribution_networkx(G):
+        graph = {}
+        for k,v in G.edges:
+            if(k in graph.keys()):
+                graph[k].append(v)
+            else:
+                graph[k] = [v]
+
+        d = {}
+        for k,v in graph.items():
+            if(len(v) in d.keys()):
+                d[len(v)]+=1
+            else:
+                d[len(v)]=1
+
+        for i in G.nodes:
+            if(i not in graph.keys()):
+                if(0 in d.keys()):
+                    d[0]+=1
+                else:
+                    d[0]=1    
+        print(len(list(G.edges)))
+        import matplotlib.pyplot as plt
+        plt.scatter(list(d.keys()),list(d.values()))
+        plt.show()
 
 
 if __name__ == "__main__":
     # Utils.clean_dataset("/home/ajayrr/Semester7/AI/project/dataset/gplus/gplus_combined.txt", "/home/ajayrr/Semester7/AI/project/ABM-Influencer-Follower-Advertising-Framework/data/cleaned_gplus_combined.txt")
     # Utils.id_degree_file_genrator("/home/ajayrr/Semester7/AI/project/ABM-Influencer-Follower-Advertising-Framework/data/cleaned_gplus_combined.txt", "/home/ajayrr/Semester7/AI/project/ABM-Influencer-Follower-Advertising-Framework/data/gplus_id_degree.txt")
+    pass
