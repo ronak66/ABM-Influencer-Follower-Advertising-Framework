@@ -231,7 +231,7 @@ class InfluencerAgent(Agent):
 import random
 import numpy as np
 from queue import Queue
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 from mesa import Model
 from mesa.space import MultiGrid
