@@ -10,9 +10,6 @@ Original file is located at
 # from google.colab import drive
 # drive.mount('/content/drive')
 
-!cp "/content/drive/My Drive/AI project/datasets/cleaned_soc-twitter-higgs.txt" "cleaned_soc-twitter-higgs.txt"
-!cp "/content/drive/My Drive/AI project/datasets/soc-twitter-higgs_id_degree.txt" "soc-twitter-higgs_id_degree.txt"
-
 # Commented out IPython magic to ensure Python compatibility.
 # %%capture
 # !pip install mesa
@@ -68,7 +65,7 @@ def gaussianRandomgenerator(x, y, mu, sigma):
 
 def randomTrueFalse(p):
     '''return true with given probability p'''
-    return random.uniform(0, 1) <= p    
+    return random.uniform(0, 1) <= p
 
 
 
@@ -78,9 +75,9 @@ import networkx as nx
 
 class Graph():
 
-    def __init__(self):        
+    def __init__(self):
         self.graph = {}
-        
+
     def assign_edge_weights(self):
         for from_node,to_node in self.edges:
             edge_weight = self.get_random_edge_weight('random')
@@ -95,14 +92,14 @@ class Graph():
             return random.random()
         if(rand_type == 'gauss'):
             return gaussianRandomgenerator(0,1,0.7,0.1)
-        
+
     def create_networkx_graph(self,n,k,p=0.5):
         G = nx.watts_strogatz_graph(n=n, k=k, p=p)
         self.edges = list(G.edges())
         self.nodes = list(G.nodes())
 
         self.assign_edge_weights()
-    
+
     def create_twitter_graph(self,filepath):
         self.edges = []
         self.nodes = set()
@@ -118,7 +115,7 @@ class Graph():
 
     def get_nodes(self):
         return self.nodes
-        
+
 class Edge():
 
     def __init__(self,node_id,weight):
@@ -174,7 +171,7 @@ class InfluencerAgent(Agent):
             (22001,45000): 5,
             (45001,None): 1
         }
-        
+
         for interval,rate in mapping.items():
             lower, upper = interval
             if(self.out_degree>=lower):
@@ -440,7 +437,7 @@ class InfluencerAdvertisingModel(Model):
         self.datacollector.collect(self)
         for _ in range(n):
             node_id = self.bfs_queue.get()
-            self.propagate_from_node(node_id)   
+            self.propagate_from_node(node_id)
         self.print_data()
         self.current_step += 1
 
@@ -521,12 +518,12 @@ def choose_best_advertisers_with_HiringConstraint(node_ids, outdegrees, total_hi
 width = height = 50
 grid=0
 graph = Graph()
-graph.create_twitter_graph(filepath='cleaned_soc-twitter-higgs.txt')
+graph.create_twitter_graph(filepath='../data/soc-twitter-higgs.txt')
 
-f = open('/content/drive/My Drive/AI project/twitter-higgs/interest_0.5_0.2/twitter_experiment_p10_data.csv','a')
+f = open('twitter-higgs_experiment_p10_data.csv','a')
 f.write('Influencer Level,N,Hiring Cost,Buyers,Outreach\n')
 f.close()
-for _ in range(1):
+for _ in range(5):
   for i in range(1,7):
       print("-"*80)
       mapping = {
@@ -537,7 +534,7 @@ for _ in range(1):
             2:(22001,45000),
             1:(45001,55000)
         }
-      node_ids_inRange, outdegrees = get_node_ids_inRange("soc-twitter-higgs_id_degree.txt", mapping[i][0], mapping[i][1]) 
+      node_ids_inRange, outdegrees = get_node_ids_inRange("../data/soc-twitter-higgs_id_degree.txt", mapping[i][0], mapping[i][1])
       max_advertiser_list = []
       max_hiring_cost = 0
 
@@ -547,7 +544,7 @@ for _ in range(1):
           if (hiring_cost > max_hiring_cost):
               max_advertiser_list = advertiser_list
               max_hiring_cost = hiring_cost
-              
+
       advertiser_list = max_advertiser_list
 
       print("Advertiser nodes: ", advertiser_list, "Number of advertisers: ", len(advertiser_list), "\nTotal out degree: ")
@@ -570,7 +567,7 @@ for _ in range(1):
           model.step()
 
 
-      f = open('/content/drive/My Drive/AI project/twitter-higgs/interest_0.5_0.2/twitter_experiment_p10_data.csv','a')
+      f = open('twitter-higgs_experiment_p10_data.csv','a')
       f.write('{},{},{},{},{}\n'.format(
               i,
               len(model.campaign_marketers[1]),
@@ -581,10 +578,10 @@ for _ in range(1):
       )
       f.close()
 
-f = open('/content/drive/My Drive/AI project/twitter-higgs/interest_0.5_0.2/twitter_experiment_p90_data.csv','a')
+f = open('twitter-higgs_experiment_p90_data.csv','a')
 f.write('Influencer Level,N,Hiring Cost,Buyers,Outreach\n')
 f.close()
-for _ in range(1):
+for _ in range(5):
   for i in range(1,7):
       print("-"*80)
       mapping = {
@@ -595,7 +592,7 @@ for _ in range(1):
             2:(22001,45000),
             1:(45001,55000)
         }
-      node_ids_inRange, outdegrees = get_node_ids_inRange("soc-twitter-higgs_id_degree.txt", mapping[i][0], mapping[i][1]) 
+      node_ids_inRange, outdegrees = get_node_ids_inRange("../data/soc-twitter-higgs_id_degree.txt", mapping[i][0], mapping[i][1])
       max_advertiser_list = []
       max_hiring_cost = 0
 
@@ -605,7 +602,7 @@ for _ in range(1):
           if (hiring_cost > max_hiring_cost):
               max_advertiser_list = advertiser_list
               max_hiring_cost = hiring_cost
-              
+
       advertiser_list = max_advertiser_list
 
       print("Advertiser nodes: ", advertiser_list, "Number of advertisers: ", len(advertiser_list), "\nTotal out degree: ")
@@ -628,7 +625,7 @@ for _ in range(1):
           model.step()
 
 
-      f = open('/content/drive/My Drive/AI project/twitter-higgs/interest_0.5_0.2/twitter_experiment_p90_data.csv','a')
+      f = open('twitter-higgs_experiment_p90_data.csv','a')
       f.write('{},{},{},{},{}\n'.format(
               i,
               len(model.campaign_marketers[1]),
