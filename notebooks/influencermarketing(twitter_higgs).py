@@ -486,7 +486,7 @@ def choose_advertisers_with_HiringConstraint(node_ids, outdegrees, total_hiring_
         hiring_cost += sorted_outdegree[idx[i]]*cost_per_post_per_follower
         if hiring_cost > total_hiring_cost:
             if i == len(idx) - 1:
-                print(i,len(idx)-1)
+#                 print(i,len(idx)-1)
                 break
             else:
                 i += 1
