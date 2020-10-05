@@ -121,8 +121,8 @@ if __name__ == '__main__':
     width = height = 50
     number_of_nodes = width*height
     # graph_type='twitter'
-    # graph_type='networkx'
-    graph_type = 'synthetic'
+    graph_type='networkx'
+    # graph_type = 'synthetic'
 
     if(graph_type=='networkx'):
         node_ids = {
@@ -130,16 +130,17 @@ if __name__ == '__main__':
         }
         grid=0
         graph = Graph()
-        graph.create_networkx_graph(97134, 0.9, 1)
+        graph.create_networkx_graph(9705668, 0.9, 5)
         Utils.generate_graph_txt(graph)
+        Utils.plot_distribution_networkx(graph)
 
     if (graph_type=='synthetic'):
 
-        node_ids_inRange, outdegrees = get_node_ids_inRange("../data/synthetic_network_id_degree.txt", 631, 700)    
+        node_ids_inRange, outdegrees = get_node_ids_inRange("../data/synthetic_network_id_degree.txt", 701, 750)
         max_advertiser_list = []
         max_hiring_cost = 0
         for _ in range(100):
-          advertiser_list, advertiser_outdegrees = choose_advertisers_with_HiringConstraint(node_ids_inRange, outdegrees, 14)
+          advertiser_list, advertiser_outdegrees = choose_advertisers_with_HiringConstraint(node_ids_inRange, outdegrees, 30)
           hiring_cost = sum(advertiser_outdegrees)*0.01
           if(hiring_cost > max_hiring_cost):
               max_advertiser_list = advertiser_list
@@ -184,21 +185,21 @@ if __name__ == '__main__':
     #     graph = Graph()
     #     graph.create_twitter_graph(filepath='../data/cleaned_gplus_combined.txt')
     #
-    params = {
-        "width":width,
-        "height":height,
-        "Graph": graph,
-        "node_ids": node_ids,
-        "grid": grid,
-        "product_cost": 10,
-        "hiring_budget": 14
-    }
-
-    server = ModularServer(
-        InfluencerAdvertisingModel,
-        display(graph_type),
-        "Influencer Advertising Model",
-        params
-    )
-    server.port = 8521
-    server.launch()
+    # params = {
+    #     "width":width,
+    #     "height":height,
+    #     "Graph": graph,
+    #     "node_ids": node_ids,
+    #     "grid": grid,
+    #     "product_cost": 10,
+    #     "hiring_budget": 30
+    # }
+    #
+    # server = ModularServer(
+    #     InfluencerAdvertisingModel,
+    #     display(graph_type),
+    #     "Influencer Advertising Model",
+    #     params
+    # )
+    # server.port = 8521
+    # server.launch()

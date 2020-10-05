@@ -44,23 +44,16 @@ class InfluencerAgent(Agent):
         # }
 
         # Networkx ---------------------------
-        # mapping = {
-        #     (1,75): 30,
-        #     (75,150): 25,
-        #     (150,300): 18,
-        #     (300,500): 12,
-        #     (500,700): 5,
-        #     (701,None): 1
-        # }
-
         mapping = {
-            (0,75): 30,
+            (1,75): 30,
             (76,150): 25,
             (151,300): 18,
             (301,500): 12,
-            (501,630): 5,
-            (631,None): 1
+            (501,700): 5,
+            (701,None): 1
         }
+
+
         for interval,rate in mapping.items():
             lower, upper = interval
             if(self.out_degree>=lower):

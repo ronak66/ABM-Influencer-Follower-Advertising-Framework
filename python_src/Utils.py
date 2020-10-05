@@ -56,14 +56,15 @@ class Utils:
         plt.scatter(list(d.keys()),list(d.values()))
         plt.show()
 
+    @staticmethod
     def generate_graph_txt(G):
         with open('../data/synthetic_network.txt', "w+") as f :
             for from_node, to_node in G.edges:
-                f.write('{} {}\n'.format(from_node, to_node))
+                f.write('{} {}\n'.format(to_node, from_node))
 
 
 if __name__ == "__main__":
     # Utils.clean_dataset("/home/ajayrr/Semester7/AI/project/dataset/gplus/gplus_combined.txt", "/home/ajayrr/Semester7/AI/project/ABM-Influencer-Follower-Advertising-Framework/data/cleaned_gplus_combined.txt")
     # Utils.id_degree_file_genrator("/home/ajayrr/Semester7/AI/project/ABM-Influencer-Follower-Advertising-Framework/data/cleaned_gplus_combined.txt", "/home/ajayrr/Semester7/AI/project/ABM-Influencer-Follower-Advertising-Framework/data/gplus_id_degree.txt")
-    # Utils.id_degree_file_genrator('../data/synthetic_network.txt', '../data/synthetic_network_id_degree.txt')
-    pass
+    Utils.id_degree_file_genrator('../data/synthetic_network.txt', '../data/synthetic_network_id_degree.txt')
+    # pass
