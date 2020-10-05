@@ -1,4 +1,3 @@
-numpy==1.18.3
-networkx==2.4
-mesa==0.8.7
-numba==0.51.0
+version https://git-lfs.github.com/spec/v1
+oid sha256:87203a23661eb8378f8cc97dc6c1fc69d4c70b30ffbc8e482a47dd3ea78eedbb
+size 54
