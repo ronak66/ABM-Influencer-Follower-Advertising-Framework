@@ -519,7 +519,7 @@ width = height = 50
 grid=0
 graph = Graph()
 graph.create_twitter_graph(filepath='../data/soc-twitter-higgs.txt')
-
+print('Loaded the graph')
 f = open('twitter-higgs_experiment_p10_data.csv','a')
 f.write('Influencer Level,N,Hiring Cost,Buyers,Outreach\n')
 f.close()
