@@ -573,112 +573,112 @@ f = open('../experimental_results/interest_0.5_0.2/gplus_p10.csv','a')
 f.write('Influencer Level,N,Hiring Cost,Buyers,Outreach\n')
 f.close()
 
-def run_experiment(i):
-    print("-"*80)
-    mapping = {
-            6:(0,500),
-            5:(501,1000),
-            4:(1001,2100),
-            3:(2101,4200),
-            2:(4201,8500),
-            1:(8501,18000)
-    }
-    node_ids_inRange, outdegrees = get_node_ids_inRange("../data/gplus_id_degree.txt", mapping[i][0], mapping[i][1])    
-    max_advertiser_list = []
-    max_hiring_cost = 0
-    for _ in range(100):
-        advertiser_list, advertiser_outdegrees = choose_advertisers_with_HiringConstraint(node_ids_inRange, outdegrees, 200)
-        hiring_cost = sum(advertiser_outdegrees)*0.01
-        if(hiring_cost > max_hiring_cost):
-            max_advertiser_list = advertiser_list
-            max_hiring_cost = hiring_cost
+# def run_experiment(i):
+#     print("-"*80)
+#     mapping = {
+#             6:(0,500),
+#             5:(501,1000),
+#             4:(1001,2100),
+#             3:(2101,4200),
+#             2:(4201,8500),
+#             1:(8501,18000)
+#     }
+#     node_ids_inRange, outdegrees = get_node_ids_inRange("../data/gplus_id_degree.txt", mapping[i][0], mapping[i][1])    
+#     max_advertiser_list = []
+#     max_hiring_cost = 0
+#     for _ in range(100):
+#         advertiser_list, advertiser_outdegrees = choose_advertisers_with_HiringConstraint(node_ids_inRange, outdegrees, 200)
+#         hiring_cost = sum(advertiser_outdegrees)*0.01
+#         if(hiring_cost > max_hiring_cost):
+#             max_advertiser_list = advertiser_list
+#             max_hiring_cost = hiring_cost
 
-    advertiser_list = max_advertiser_list
+#     advertiser_list = max_advertiser_list
 
-    print("Advertiser nodes: ", advertiser_list, "Number of advertisers: ", len(advertiser_list), "\nTotal out degree: ", sum(advertiser_outdegrees))
-    node_ids = {
-        1: advertiser_list
-    }
-    params = {
-        "width":width,
-        "height":height,
-        "Graph": graph,
-        "node_ids": node_ids,
-        "grid": grid,
-        "product_cost": 10,
-        "hiring_budget": 340
-    }
-    model = InfluencerAdvertisingModel(width,height,graph,node_ids,10,340,grid)
-
-
-    for _ in range(15):
-        model.step()
+#     print("Advertiser nodes: ", advertiser_list, "Number of advertisers: ", len(advertiser_list), "\nTotal out degree: ", sum(advertiser_outdegrees))
+#     node_ids = {
+#         1: advertiser_list
+#     }
+#     params = {
+#         "width":width,
+#         "height":height,
+#         "Graph": graph,
+#         "node_ids": node_ids,
+#         "grid": grid,
+#         "product_cost": 10,
+#         "hiring_budget": 340
+#     }
+#     model = InfluencerAdvertisingModel(width,height,graph,node_ids,10,340,grid)
 
 
-    f = open('../experimental_results/interest_0.5_0.2/gplus_p10.csv','a')
-    f.write('{},{},{},{},{}\n'.format(
-            i,
-            len(model.campaign_marketers[1]),
-            model.total_hiring_cost,
-            model.number_bought(model),
-            len(model.visited_nodes),
-        )
-    )
-    f.close()
-
-pool = Pool(os.cpu_count())
-pool.map(run_experiment, range(1, 7))
-
-# for _ in range(10):
-#   for i in range(1,7):
-#       print("-"*80)
-#       mapping = {
-#               6:(0,500),
-#               5:(501,1000),
-#               4:(1001,2100),
-#               3:(2101,4200),
-#               2:(4201,8500),
-#               1:(8501,18000)
-#       }
-#       node_ids_inRange, outdegrees = get_node_ids_inRange("../data/gplus_id_degree.txt", mapping[i][0], mapping[i][1])    
-#       max_advertiser_list = []
-#       max_hiring_cost = 0
-#       for _ in range(100):
-#           advertiser_list, advertiser_outdegrees = choose_advertisers_with_HiringConstraint(node_ids_inRange, outdegrees, 200)
-#           hiring_cost = sum(advertiser_outdegrees)*0.01
-#           if(hiring_cost > max_hiring_cost):
-#               max_advertiser_list = advertiser_list
-#               max_hiring_cost = hiring_cost
-
-#       advertiser_list = max_advertiser_list
-
-#       print("Advertiser nodes: ", advertiser_list, "Number of advertisers: ", len(advertiser_list), "\nTotal out degree: ", sum(advertiser_outdegrees))
-#       node_ids = {
-#           1: advertiser_list
-#       }
-#       params = {
-#           "width":width,
-#           "height":height,
-#           "Graph": graph,
-#           "node_ids": node_ids,
-#           "grid": grid,
-#           "product_cost": 10,
-#           "hiring_budget": 340
-#       }
-#       model = InfluencerAdvertisingModel(width,height,graph,node_ids,10,340,grid)
+#     for _ in range(15):
+#         model.step()
 
 
-#       for _ in range(15):
-#           model.step()
+#     f = open('../experimental_results/interest_0.5_0.2/gplus_p10.csv','a')
+#     f.write('{},{},{},{},{}\n'.format(
+#             i,
+#             len(model.campaign_marketers[1]),
+#             model.total_hiring_cost,
+#             model.number_bought(model),
+#             len(model.visited_nodes),
+#         )
+#     )
+#     f.close()
+
+# pool = Pool(os.cpu_count())
+# pool.map(run_experiment, range(1, 7))
+
+for _ in range(10):
+  for i in range(1,7):
+      print("-"*80)
+      mapping = {
+              6:(0,500),
+              5:(501,1000),
+              4:(1001,2100),
+              3:(2101,4200),
+              2:(4201,8500),
+              1:(8501,18000)
+      }
+      node_ids_inRange, outdegrees = get_node_ids_inRange("../data/gplus_id_degree.txt", mapping[i][0], mapping[i][1])    
+      max_advertiser_list = []
+      max_hiring_cost = 0
+      for _ in range(100):
+          advertiser_list, advertiser_outdegrees = choose_advertisers_with_HiringConstraint(node_ids_inRange, outdegrees, 200)
+          hiring_cost = sum(advertiser_outdegrees)*0.01
+          if(hiring_cost > max_hiring_cost):
+              max_advertiser_list = advertiser_list
+              max_hiring_cost = hiring_cost
+
+      advertiser_list = max_advertiser_list
+
+      print("Advertiser nodes: ", advertiser_list, "Number of advertisers: ", len(advertiser_list), "\nTotal out degree: ", sum(advertiser_outdegrees))
+      node_ids = {
+          1: advertiser_list
+      }
+      params = {
+          "width":width,
+          "height":height,
+          "Graph": graph,
+          "node_ids": node_ids,
+          "grid": grid,
+          "product_cost": 10,
+          "hiring_budget": 340
+      }
+      model = InfluencerAdvertisingModel(width,height,graph,node_ids,10,340,grid)
 
 
-#       f = open('../experimental_results/interest_0.5_0.2/gplus_p10.csv','a')
-#       f.write('{},{},{},{},{}\n'.format(
-#               i,
-#               len(model.campaign_marketers[1]),
-#               model.total_hiring_cost,
-#               model.number_bought(model),
-#               len(model.visited_nodes),
-#           )
-#       )
-#       f.close()
+      for _ in range(15):
+          model.step()
+
+
+      f = open('../experimental_results/interest_0.5_0.2/gplus_p10.csv','a')
+      f.write('{},{},{},{},{}\n'.format(
+              i,
+              len(model.campaign_marketers[1]),
+              model.total_hiring_cost,
+              model.number_bought(model),
+              len(model.visited_nodes),
+          )
+      )
+      f.close()
