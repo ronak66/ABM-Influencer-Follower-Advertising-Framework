@@ -248,7 +248,7 @@ class InfluencerAgent(Agent):
 import random
 import numpy as np
 from queue import Queue
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 from mesa import Model
 from mesa.space import MultiGrid
@@ -626,15 +626,8 @@ def run_experiment(i):
     )
     f.close()
 
-
-def run_experiments(k):
-    pool1 = Pool(os.cpu_count())
-    pool1.map(run_experiment, range(1,7))
-
-
-
 pool = Pool(os.cpu_count())
-pool.map(run_experiments, range(0, 10))
+pool.map(run_experiment, range(1, 7))
 
 # for _ in range(10):
 #   for i in range(1,7):
