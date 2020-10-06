@@ -33,7 +33,7 @@ class InfluencerAgent(Agent):
         return self.decision
 
     def set_engagement_rate(self):
-        # Twitter ---------------------------
+        # Twitter =============================================
         # mapping = {
         #     (0,50): 30,
         #     (51,200): 25,
@@ -43,15 +43,25 @@ class InfluencerAgent(Agent):
         #     (3001,None): 1
         # }
 
-        # Networkx ---------------------------
+        # Google Plus =========================================
         mapping = {
-            (1,75): 30,
-            (76,150): 25,
-            (151,300): 18,
-            (301,500): 12,
-            (501,700): 5,
-            (701,None): 1
+            (0,500):30,
+            (501,1000):25,
+            (1001,2100):18,
+            (2101,4200):12,
+            (4201,8500):5,
+            (8501,18000):1
         }
+
+        # Networkx ================================================
+        # mapping = {
+        #     (1,75): 30,
+        #     (76,150): 25,
+        #     (151,300): 18,
+        #     (301,500): 12,
+        #     (501,700): 5,
+        #     (701,None): 1
+        # }
 
 
         for interval,rate in mapping.items():
@@ -64,23 +74,6 @@ class InfluencerAgent(Agent):
                     break
 
     def set_hiring_cost(self):
-        # mapping = {
-        #     (0, 50): 5,
-        #     (51,200): 10,
-        #     (201,400): 40,
-        #     (401,1000): 45,  #0.1, 0.05, 0.1, 0.045, 0.02, 0.02
-        #     (1001,1500): 30,
-        #     (1501,3000): 60,
-        #     (3001,None): 200
-        # }
-        # for interval,rate in mapping.items():
-        #     lower, upper = interval
-        #     if(self.out_degree>=lower):
-        #         if(upper == None):
-        #             self.hiring_cost = rate
-        #         elif(self.out_degree<=upper):
-        #             self.hiring_cost = rate
-        #             break
         cost_per_post_per_follower = 0.01
         self.hiring_cost = cost_per_post_per_follower*self.out_degree
 
