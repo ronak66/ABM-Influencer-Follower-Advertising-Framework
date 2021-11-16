@@ -1,5 +1,20 @@
 # Agent Based Model: Influncer-Follower Dynamics for Advertising Campaign
 
+This is the official implementation of [Modeling Influencer Marketing Campaigns In Social Networks](https://arxiv.org/abs/2106.01750).
+
+If you use these resources and methods, please cite the following paper:
+
+```
+@misc{doshi2021modeling,
+      title={Modeling Influencer Marketing Campaigns In Social Networks}, 
+      author={Ronak Doshi and Ajay Ramesh Ranganathan and Shrisha Rao},
+      year={2021},
+      eprint={2106.01750},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI}
+}
+```
+
 
 ## Run Locally
 **1. Clone the repo**
